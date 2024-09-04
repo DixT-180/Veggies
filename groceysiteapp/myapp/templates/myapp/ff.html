@@ -10,17 +10,16 @@
   <body>
     <center>
 
-<form name="register" method="post" action="../insert_fbought/">
+<form name="register" method="post" action="../insert_ffreeze/">
     {% csrf_token %}
     <pre>
 
   {% comment %} FID : <input type="text" name="fid" value="" width="200"> <br> {% endcomment %}
    Food Bought : <input type="text" name="fbought" value="" width="200"> <br>
-  Freeze??? : <input type="checkbox" id="id_freeze" name="ffreeze">
-  <label for="id_freeze">Check if frozen</label> <br>
-   Food Amount :  <input type="text" name="fbamount" value="" width="200">
     <br>
-   Date : <input type="text" name="date" value="" width="200"> <br>
+    food lifespan(freeze):<input type="text" name="flfreeze" value="" width="200"> <br>
+    food lifespan(non-freeze):<input type="text" name="flnfreeze" value="" width="200"> <br>
+
 
    <input type="submit" name="fb" value="click to submit" width="300" height="100">
    {% csrf_token %}

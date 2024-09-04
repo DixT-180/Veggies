@@ -23,6 +23,7 @@ urlpatterns = [
      path("",views.index,name="index"),
      path('fb/',views.fb,name="fb"),
       path('fc/',views.fc,name="fc"),
+        path('ff/',views.ff,name="ff"),
       path('navbar/',views.navbar,name="navbar"),
         path('insert_fbought/',views.insert_fbought,
         name="insert_fbought"),
@@ -31,27 +32,47 @@ urlpatterns = [
            path('insert_fconsumed/',views.insert_fconsumed,name="insert_fconsumed"),
              path('viewtables/',views.viewtables,name="viewtables"),
 
+            #  path('', views.viewtables_exp, name="index"),
+
              path('deletefbitem/<int:id>',views.deletefbitem,name="deletefbitem"),
 
               path('deletefcitem/<int:id>',views.deletefcitem,
               name="deletefcitem"),
+
+                 path('deletefreezeritem/<int:id>',views.deletefreezeritem,
+              name="deletefreezeritem"),
 
 
 
               path('editfbitem/<int:id>',views.editfbitem,name="editfbitem"),
 
 
+
+
               path('editfcitem/<int:id>',views.editfcitem,name="editfcitem"),
               
 
-              path('updatefbitem/<int:id>',views.updatefbitem,name="updatefbitem"),
+              path('editfreezeritem/<int:id>',views.editfreezeritem,name="editfreezeritem"),
 
               
-              path('updatefcitem/<int:id>',views.updatefcitem,name="updatefcitem")
+              path('updatefc/<int:id>',views.updatefcitem,name="updatefcitem")
+
+              ,
+path('updatefbitem/<int:id>', views.updatefbitem, name='updatefbitem')
+              ,
+              path('updatefcitem/<int:id>', views.updatefcitem, name='updatefcitem'),
+              
+             path('updatefreezeritem/<int:id>',views.updatefreezeritem,name="updatefreezeritem")
 
               ,
 
+
           path('remaining_food/', views.remaining_food, name='remaining_food'),
+
+
+
+              path('insert_ffreeze/', views.insert_ffreeze, name='insert_ffreeze'),
+     
 
 
 

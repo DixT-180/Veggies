@@ -13,7 +13,7 @@
 <h1>edit </h1>
 
 <center>
-    <form method ="POST" action="/updatefbitem/{{fb_item.id}}">
+    <form method ="POST" action="/updatefreezeritem/{{fz_item.id}}">
         {% csrf_token %}
         <div class="container">
             <br>
@@ -27,48 +27,37 @@
                  <label class="col-sm-2 col-form-label">Id</label>
                  <div class ="col-sm-4">
                     <input type="text" name="nid" id="id" required maxlength="20"
-                    value="{{ fb_item.id}}"/>
+                    value="{{ fz_item.id}}"/>
                  </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Food brought</label>
                     <div class ="col-sm-4">
-                   <input type="text" name="nfbought" id="fbought" required maxlength="100"
-                    value="{{ fb_item.fbought }}" />
+                   <input type="text" name="ffbought" id="fbought" required maxlength="100"
+                    value="{{ fz_item.fbought }}" />
                         </div>
                         </div>
 
 
   <div class="form-group row">
-    <label class="col-sm-2 col-form-label">Food Freeze?</label>
-    <div class="col-sm-4">
-        <input type="checkbox" name="nffreeze" id="nffreeze" {% if fb_item.freeze %}checked{% endif %} />
-        <label for="nffreeze">Check if frozen</label>
-    </div>
-</div>
+                    <label class="col-sm-2 col-form-label">Food lifespan(freeze)</label>
+                    <div class ="col-sm-4">
+                   <input type="text" name="flfreeze" id="" required maxlength="100"
+                    value="{{ fz_item.ffreeze }}" />
+                        </div>
+                        </div>
 
-   
-
-
-
-
-
-             <div class="form-group row">
-                 <label class="col-sm-2 col-form-label">fbamount</label>
-                 <div class ="col-sm-4">
-                    <input type="text" name="nfamount" id="famount" required maxlength="20"
-                    value="{{ fb_item.fbamount}}"/>
-                 </div>
-                </div>
+     <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Food lifespan(non-freeze)</label>
+                    <div class ="col-sm-4">
+                   <input type="text" name="flnfreeze" id="" required maxlength="100"
+                    value="{{ fz_item.fnfreeze }}" />
+                        </div>
+                        </div>
 
 
-                   <div class="form-group row">
-                 <label class="col-sm-2 col-form-label">date</label>
-                 <div class ="col-sm-4">
-                    <input type="text" name="ndate" id="date" required maxlength="20"
-                    value="{{ fb_item.date}}"/>
-                 </div>
-                </div>
+
+
 
 
                     <div class="form-group row">

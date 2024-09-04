@@ -12,6 +12,7 @@
 <a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
 <a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
 <a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
+<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
 
 <h1>Check Remaining Food</h1>
 
@@ -30,6 +31,32 @@
 {% else %}
     <p>No remaining food data available.</p>
 {% endif %}
+<br>
+<br>
+<center>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Food Bought</th>
+        <th>Frozen?</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Expiry Date</th>
+        <th>Actions</th>
+    </tr>
+    {% for item in bought_data %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.fbought }}</td>
+        <td>{{ item.freeze }}</td>
+        <td>{{ item.fbamount }}</td>
+        <td>{{ item.date }}</td>
+        <td>{{ item.expiry_date|date:"F j, Y" }}</td>
+        <td><!-- Actions like delete, edit --></td>
+    </tr>
+    {% endfor %}
+</table>
 
+</center>
 </body>
 </html>

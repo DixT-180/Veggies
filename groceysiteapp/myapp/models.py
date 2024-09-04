@@ -9,9 +9,13 @@ class Fbought(models.Model):
     fbought = models.CharField(max_length=100)
     fbamount = models.CharField(max_length=100)
     date=models.DateTimeField()
-    
+    freeze = models.BooleanField(default=False) 
+    expiry = models.DateTimeField(null=True, blank=True)
+    def __str__(self):
+        return self.fbought
     class Meta:
         db_table = "fbought"
+    
 
 
 
@@ -23,3 +27,11 @@ class Fconsumed(models.Model):
     
     class Meta:
         db_table = "fconsumed"
+
+class Ffreezer(models.Model):
+    fbought = models.ForeignKey(Fbought, on_delete=models.CASCADE)
+    ffreeze = models.CharField(max_length=100)
+    fnfreeze = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "ffreezer"
