@@ -29,7 +29,7 @@ class Fconsumed(models.Model):
         db_table = "fconsumed"
 
 class Ffreezer(models.Model):
-    fbought = models.ForeignKey(Fbought, on_delete=models.CASCADE)
+    ffbought = models.CharField(max_length=100)
     ffreeze = models.CharField(max_length=100)
     fnfreeze = models.CharField(max_length=100)
 

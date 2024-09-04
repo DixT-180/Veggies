@@ -7,7 +7,7 @@ from django.utils import timezone
 
 #     return render(request,"myapp/index.html",{})
 
-
+#done
 def index(request):
     bought = Fbought.objects.all()
     consumed = Fconsumed.objects.all()
@@ -19,14 +19,15 @@ def index(request):
         
         # Check if the item is frozen
         if item.freeze:
+            
             # Get the frozen food life from the Ffreezer table
-            freezer_item = Ffreezer.objects.filter(fbought=item).first()
+            freezer_item = Ffreezer.objects.filter(ffbought=item).first()
             if freezer_item and freezer_item.ffreeze:
                 food_life = int(freezer_item.ffreeze)  # Convert to integer
                 expiry_date = item.date + timedelta(days=food_life)
         else:
             # Get the non-frozen food life from the Ffreezer table
-            freezer_item = Ffreezer.objects.filter(fbought=item).first()
+            freezer_item = Ffreezer.objects.filter(ffbought=item).first()
             if freezer_item and freezer_item.fnfreeze:
                 food_life = int(freezer_item.fnfreeze)  # Convert to integer
                 expiry_date = item.date + timedelta(days=food_life)
@@ -43,6 +44,8 @@ def index(request):
     remaining_foods = []
 
     for food_item in food_items:
+        print(food_item, "xxxxx------------------>")
+        
         # Calculate the total bought amount of the food item until the current date
         total_bought = Fbought.objects.filter(fbought=food_item, date__lte=current_date).aggregate(total=Sum('fbamount'))['total'] or 0
 
@@ -131,14 +134,14 @@ def viewtables(request):
         # Check if the item is frozen
         if item.freeze:
             # Get the frozen food life from the Ffreezer table
-            freezer_item = Ffreezer.objects.filter(fbought=item).first()
+            freezer_item = Ffreezer.objects.filter(ffbought=item).first()
             print(freezer_item,"xxxtrue")
             if freezer_item and freezer_item.ffreeze:
                 food_life = int(freezer_item.ffreeze)  # Convert to integer
                 expiry_date = item.date + timedelta(days=food_life)
         else:
             # Get the non-frozen food life from the Ffreezer table
-            freezer_item = Ffreezer.objects.filter(fbought=item).first()
+            freezer_item = Ffreezer.objects.filter(ffbought=item).first()
             print(freezer_item,"xxxfalse")
             if freezer_item and freezer_item.fnfreeze:
                 food_life = int(freezer_item.fnfreeze)  # Convert to integer
@@ -311,36 +314,36 @@ def updatefreezeritem(request, id):
 
 
 
-# def insert_ffreeze(request):
-#     fbought = request.POST['fbought']
-#     flfreeze = request.POST['flfreeze']
-#     flnfreeze = request.POST['flnfreeze']
-#     ff= Ffreezer( fbought=fbought, ffreeze= flfreeze,fnfreeze=flnfreeze)
-#     ff.save()
-#     return render(request,'myapp/ff.html',{})
-
-
-
 def insert_ffreeze(request):
-    if request.method == "POST":
-        fbought_name = request.POST.get('fbought')
-        flfreeze = request.POST.get('flfreeze')
-        flnfreeze = request.POST.get('flnfreeze')
+    ffbought = request.POST['ffbought']
+    flfreeze = request.POST['flfreeze']
+    flnfreeze = request.POST['flnfreeze']
+    ff= Ffreezer( ffbought=ffbought, ffreeze= flfreeze,fnfreeze=flnfreeze)
+    ff.save()
+    return render(request,'myapp/ff.html',{})
 
-        try:
-            # Retrieve the Fbought instance based on the name
-            fbought_instance = Fbought.objects.get(fbought=fbought_name)
+
+
+# def insert_ffreeze(request):
+#     if request.method == "POST":
+#         fbought_name = request.POST.get('ffbought')
+#         flfreeze = request.POST.get('flfreeze')
+#         flnfreeze = request.POST.get('flnfreeze')
+
+#         try:
+#             # Retrieve the Fbought instance based on the name
+#             fbought_instance = Fbought.objects.get(fbought=fbought_name)
             
-            # Create the Ffreezer instance with the Fbought instance
-            ff = Ffreezer(fbought=fbought_instance, ffreeze=flfreeze, fnfreeze=flnfreeze)
-            ff.save()
+#             # Create the Ffreezer instance with the Fbought instance
+#             ff = Ffreezer(ffbought=fbought_instance, ffreeze=flfreeze, fnfreeze=flnfreeze)
+#             ff.save()
 
-            return redirect('ff')  # Redirect to the ff page or another page after saving
-        except Fbought.DoesNotExist:
-            # Handle the case where the specified Fbought instance does not exist
-            return render(request, 'myapp/ff.html', {'error': 'The specified food item does not exist.'})
+#             return redirect('ff')  # Redirect to the ff page or another page after saving
+#         except Fbought.DoesNotExist:
+#             # Handle the case where the specified Fbought instance does not exist
+#             return render(request, 'myapp/ff.html', {'error': 'The specified food item does not exist.'})
     
-    return render(request, 'myapp/ff.html', {})
+#     return render(request, 'myapp/ff.html', {})
 
 
 
@@ -354,31 +357,32 @@ def insert_ffreeze(request):
 
 def remaining_food(request):
     current_date = timezone.now().date()  # Automatically get the current date
-
+    pass
     # Get all distinct food items that have been bought
-    food_items = Fbought.objects.values_list('fbought', flat=True).distinct()
+    # food_items = Fbought.objects.values_list('fbought', flat=True).distinct()
+    # print(food_items,"xxxxx------------------>")
     
-    remaining_foods = []
+    # remaining_foods = []
 
-    for food_item in food_items:
-        # Calculate the total bought amount of the food item until the current date
-        total_bought = Fbought.objects.filter(fbought=food_item, date__lte=current_date).aggregate(total=Sum('fbamount'))['total'] or 0
+    # for food_item in food_items:
+    #     # Calculate the total bought amount of the food item until the current date
+    #     total_bought = Fbought.objects.filter(fbought=food_item, date__lte=current_date).aggregate(total=Sum('fbamount'))['total'] or 0
 
-        # Calculate the total consumed amount of the food item until the current date
-        total_consumed = Fconsumed.objects.filter(fconsumed=food_item, date__lte=current_date).aggregate(total=Sum('fcamount'))['total'] or 0
+    #     # Calculate the total consumed amount of the food item until the current date
+    #     total_consumed = Fconsumed.objects.filter(fconsumed=food_item, date__lte=current_date).aggregate(total=Sum('fcamount'))['total'] or 0
 
-        # Calculate the remaining amount
-        remaining = total_bought - total_consumed
+    #     # Calculate the remaining amount
+    #     remaining = total_bought - total_consumed
 
-        remaining_foods.append({
-            'food_item': food_item,
-            'remaining': remaining
-        })
+    #     remaining_foods.append({
+    #         'food_item': food_item,
+    #         'remaining': remaining
+    #     })
 
-    return render(request, 'myapp/index.html', {
-        'remaining_foods': remaining_foods,
-        'date': current_date
-    })
+    # return render(request, 'myapp/index.html', {
+    #     'remaining_foods': remaining_foods,
+    #     'date': current_date
+    # })
 
 
 
