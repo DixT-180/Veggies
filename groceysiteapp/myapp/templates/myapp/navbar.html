@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fbought Data</title>
+</head>
+<body>
+    <h1>Fbought Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Food Bought</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in bought_data %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.fbought }}</td>
+                <td>{{ item.fbamount }}</td>
+                <td>{{ item.date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

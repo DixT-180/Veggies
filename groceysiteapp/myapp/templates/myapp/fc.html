@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <center>
+<h1>Foodconsumed </h1>
+<form name="register" method="post" action="../insert_fconsumed/">
+    {% csrf_token %}
+    <pre>
+
+  {% comment %} FcID : <input type="text" name="fcid" value="" width="200"> <br> {% endcomment %}
+   Food Consumed(Name) : <input type="text" name="fconsumed" value="" width="200"> <br>
+   Amount Consumed :  <input type="text" name="fcamount" value="" width="200"> <br>
+   Date : <input type="text" name="date" value="" width="200"> <br>
+
+   <input type="submit" name="fb" value="click to submit" width="300" height="100">
+   {% csrf_token %}
+    </pre>
+</form>
+
+
+    </center>
+
+
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <center>
+        <table class="table table-striped table-bordered table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th>id</th>
+                    <th>fbought</th>
+                    <th>fbamount</th>
+                    <th>date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in bought_data %}
+                <tr>
+                    <td>{{ obj.id }}</td>
+                    <td>{{ obj.fbought }}</td>
+                    <td>{{ obj.fbamount }}</td>
+                    <td>{{ obj.date }}</td>
+                    <td>
+                        <a href="/deletefbitem/{{ obj.id }}">delete</a>
+                       <a href="/editfbitem/{{ obj.id }}">Edit</a>
+
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </center>
+<br>
+<br>
+<br>
+<br>
+    <center>
+        <table class="table table-striped table-bordered table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th>id</th>
+                    <th>fconsumed</th>
+                    <th>fcamount</th>
+                    <th>date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in consumed_data %}
+                <tr>
+                    <td>{{ obj.id }}</td>
+                    <td>{{ obj.fconsumed }}</td>
+                    <td>{{ obj.fcamount }}</td>
+                    <td>{{ obj.date }}</td>
+                  <td>
+                        <a href="/deletefcitem/{{ obj.id }}">delete</a>
+                         <a href="/editfcitem/{{ obj.id }}">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </center>
+</body>
+</html>

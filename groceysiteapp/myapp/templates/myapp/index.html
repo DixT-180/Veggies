@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Remaining Food</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
+<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
+<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
+
+<h1>Check Remaining Food</h1>
+
+<!-- Button to trigger the view -->
+<form method="GET" action="{% url 'remaining_food' %}">
+    <input type="submit" value="Show Remaining Vegetables">
+</form>
+
+{% if remaining_foods %}
+    <h2>Remaining Food as of {{ date }}:</h2>
+    <ul>
+        {% for food in remaining_foods %}
+            <li>{{ food.food_item }}: {{ food.remaining }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No remaining food data available.</p>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <center>
+
+<form name="register" method="post" action="../insert_fbought/">
+    {% csrf_token %}
+    <pre>
+
+  {% comment %} FID : <input type="text" name="fid" value="" width="200"> <br> {% endcomment %}
+   Food Bought : <input type="text" name="fbought" value="" width="200"> <br>
+   Food Amount :  <input type="text" name="fbamount" value="" width="200"> <br>
+   Date : <input type="text" name="date" value="" width="200"> <br>
+
+   <input type="submit" name="fb" value="click to submit" width="300" height="100">
+   {% csrf_token %}
+    </pre>
+</form>
+
+
+    </center>
+
+
+  </body>
+</html>
