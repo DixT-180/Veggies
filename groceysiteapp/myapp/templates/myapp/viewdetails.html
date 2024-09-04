@@ -8,7 +8,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
+<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
+<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
+<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
+    
     <center>
+        <h3>Food brought <h3>
         <table class="table table-striped table-bordered table-sm">
             <thead class="thead-dark">
                 <tr>
@@ -29,8 +35,9 @@
                     
                       <td>{{ obj.freeze }}</td>
                     <td>{{ obj.fbamount }}</td>
-                    <td>{{ obj.date }}</td>
-                      <td>{{ obj.expiry }}</td>
+                 <td>{{ obj.date|date:"M j, Y" }}</td>
+<td>{{ obj.expiry_date|date:"M j, Y" }}</td>
+
                     <td>
                         <a href="/deletefbitem/{{ obj.id }}">delete</a>
                        <a href="/editfbitem/{{ obj.id }}">Edit</a>
@@ -46,7 +53,9 @@
 <br>
 <br>
 <br>
+
     <center>
+         <h3>Food consumed<h3>
         <table class="table table-striped table-bordered table-sm">
             <thead class="thead-dark">
                 <tr>
@@ -63,7 +72,8 @@
                     <td>{{ obj.id }}</td>
                     <td>{{ obj.fconsumed }}</td>
                     <td>{{ obj.fcamount }}</td>
-                    <td>{{ obj.date }}</td>
+                 <td>{{ obj.date|date:"M j, Y" }}</td>
+
                   <td>
                         <a href="/deletefcitem/{{ obj.id }}">delete</a>
                          <a href="/editfcitem/{{ obj.id }}">Edit</a>
@@ -78,6 +88,7 @@
 <br>
 <br>
 <center>
+     <h3>Food freeze info <h3>
         <table class="table table-striped table-bordered table-sm">
             <thead class="thead-dark">
                 <tr>
@@ -110,6 +121,7 @@
 <br>
 
 <center>
+    <h3> Food left  <h3>
 <table>
     <tr>
         <th>ID</th>
@@ -120,20 +132,20 @@
         <th>Expiry Date</th>
         <th>Actions</th>
     </tr>
-    {% for item in bought_data %}
+    {% for item in bought_expiry %}
     <tr>
         <td>{{ item.id }}</td>
         <td>{{ item.fbought }}</td>
         <td>{{ item.freeze }}</td>
         <td>{{ item.fbamount }}</td>
-        <td>{{ item.date }}</td>
-        <td>{{ item.expiry_date|date:"F j, Y" }}</td>
+       <td>{{ item.date|date:"M j, Y" }}</td>
+<td>{{ item.expiry_date|date:"M j, Y" }}</td>
         <td><!-- Actions like delete, edit --></td>
     </tr>
     {% endfor %}
 </table>
 
-</center>
+</center> 
 
 </body>
 </html>

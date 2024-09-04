@@ -14,11 +14,11 @@
 <a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
 <a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
 
-<h1>Check Remaining Food</h1>
+<h1>Remaining food that we have</h1>
 
 <!-- Button to trigger the view -->
 <form method="GET" action="{% url 'remaining_food' %}">
-    <input type="submit" value="Show Remaining Vegetables">
+    {% comment %} <input type="submit" value="Show Remaining Vegetables"> {% endcomment %}
 </form>
 
 {% if remaining_foods %}
@@ -50,8 +50,8 @@
         <td>{{ item.fbought }}</td>
         <td>{{ item.freeze }}</td>
         <td>{{ item.fbamount }}</td>
-        <td>{{ item.date }}</td>
-        <td>{{ item.expiry_date|date:"F j, Y" }}</td>
+      <td>{{ item.date|date:"M j, Y" }}</td>
+<td>{{ item.expiry_date|date:"M j, Y" }}</td>
         <td><!-- Actions like delete, edit --></td>
     </tr>
     {% endfor %}

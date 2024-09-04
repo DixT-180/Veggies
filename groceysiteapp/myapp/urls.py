@@ -67,7 +67,8 @@ path('updatefbitem/<int:id>', views.updatefbitem, name='updatefbitem')
               ,
 
 
-          path('remaining_food/', views.remaining_food, name='remaining_food'),
+         path('remaining_food/', views.remaining_food, name="remaining_food"),
+
 
 
 

@@ -6,26 +6,9 @@
     <title>Fbought Data</title>
 </head>
 <body>
-    <h1>Fbought Data</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Food Bought</th>
-                <th>Amount</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in bought_data %}
-            <tr>
-                <td>{{ item.id }}</td>
-                <td>{{ item.fbought }}</td>
-                <td>{{ item.fbamount }}</td>
-                <td>{{ item.date }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
+<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
+<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
+<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
 </body>
 </html>
