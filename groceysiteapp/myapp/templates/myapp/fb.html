@@ -24,6 +24,17 @@
   <label for="id_freeze">Check if frozen</label> <br>
    Food Amount :  <input type="text" name="fbamount" value="" width="200">
     <br>
+   
+<label for="category">Choose a Food category:</label>
+    <select name="fcategory" id="fcategory">
+        <option value="" disabled selected>Select a Category</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}" style="color: black;">{{ category.fbought }}</option>
+        {% endfor %}
+    </select>
+
+
+
    Date : <input type="text" name="date" value="" width="200"> <br>
 
    <input type="submit" name="fb" value="click to submit" width="300" height="100">

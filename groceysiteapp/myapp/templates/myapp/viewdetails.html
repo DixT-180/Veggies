@@ -22,6 +22,7 @@
                     <th>fbought</th>
                      <th>freeze?</th>
                     <th>fbamount</th>
+                     <th>category</th>
                     <th>date</th>
                      <th>Expiry date</th>
                     <th>Actions</th>
@@ -35,8 +36,9 @@
                     
                       <td>{{ obj.freeze }}</td>
                     <td>{{ obj.fbamount }}</td>
+                    <td>{{ obj.fcategory }}</td>
                  <td>{{ obj.date|date:"M j, Y" }}</td>
-<td>{{ obj.expiry_date|date:"M j, Y" }}</td>
+<td>{{ obj.expiry|date:"M j, Y" }}</td>
 
                     <td>
                         <a href="/deletefbitem/{{ obj.id }}">delete</a>
@@ -148,6 +150,30 @@
 </table>
 
 </center> 
+
+<center>
+    <h3>Food details </h3>
+<table>
+    <tr>
+        <th>Food name</th>
+        <th>Food Calorie</th>
+        <th>food Category</th>
+        <th>Food Price</th>
+    </tr>
+    {% for item in foods %}
+    <tr>
+        <td>{{ item.food_name }}</td>
+        <td>{{ item.food_calorie }}</td>
+       
+        <td>{{ item.food_category }}</td>
+        <td>{{ item.fprice }}</td>
+
+        <td><!-- Actions like delete, edit --></td>
+    </tr>
+    {% endfor %}
+</table>
+
+</center>
 
 </body>
 </html>

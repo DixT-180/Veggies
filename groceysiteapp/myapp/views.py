@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 # Create your views here.
-from .models import Fbought, Fconsumed,Ffreezer
+from .models import Fbought, Fconsumed,Ffreezer,Food
 from django.db.models import Sum
 from django.utils import timezone
 # def index(request):
@@ -12,7 +12,7 @@ def index(request):
     bought = Fbought.objects.all()
     consumed = Fconsumed.objects.all()
     freezed = Ffreezer.objects.all()
-
+    
     for item in bought:
         # Initialize the expiry date to None
         expiry_date = None
@@ -33,7 +33,8 @@ def index(request):
                 expiry_date = item.date + timedelta(days=food_life)
 
         # Set the calculated expiry date to the item
-        item.expiry_date = expiry_date
+        item.expiry = expiry_date
+        item.save()
 
         #for remaining food part 
     current_date = timezone.now().date()  # Automatically get the current date
@@ -95,8 +96,7 @@ def index(request):
 
 
 
-
-
+ 
 
 
 
@@ -107,6 +107,7 @@ def index(request):
     return render(request, 'myapp/index.html', {
         'remaining_foods': result,
         'date': current_date,'bought_data': bought,"freezer_data":freezed
+    
 
     })
          
@@ -119,7 +120,10 @@ def navbar(request):
 
 
 def fb(request):
-    return render(request,"myapp/fb.html")
+    categories = Fbought.objects.values('fbought').distinct()
+    print(categories,"cats")
+    return render(request, 'myapp/fb.html', {'categories': categories})
+    # return render(request,"myapp/fb.html")
 
 
 def fc(request):
@@ -149,12 +153,33 @@ def insert_fbought(request):
 
 
 
-        print(freeze,'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+       
         
         fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze)
         fb_.save()
         return redirect('fb')  # Redirect to the fb page or another page after saving
     return render(request, 'myapp/fb.html', {})
+
+def foodcat(request):
+    return render(request,"myapp/foodcat.html")
+
+
+
+def insert_food_cat(request):
+    if request.method == "POST":
+        food_name = request.POST.get('food_name', '')
+        food_cat = request.POST.get('food_cat', '')
+        fcals = request.POST.get('fcals', '')
+        fprice = request.POST.get('fprice', '')
+        
+     
+        food_ = Food(food_name=food_name, food_category=food_cat, food_calorie=fcals, fprice=fprice)
+        food_.save()
+        return redirect('foodcat')  # Redirect to the fb page or another page after saving
+    return render(request, 'myapp/foodcat.html', {})
+
+
+
 
 
 
@@ -163,6 +188,8 @@ def viewtables(request):
     bought = Fbought.objects.all()
     consumed = Fconsumed.objects.all()
     freezed = Ffreezer.objects.all()
+    foods = Food.objects.all( )
+
 
 
 
@@ -196,7 +223,7 @@ def viewtables(request):
 
         #for remaining food part 
 
-    return render(request, 'myapp/viewdetails.html', {'bought_expiry': bought_expiry,'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed
+    return render(request, 'myapp/viewdetails.html', {'bought_expiry': bought_expiry,'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed,"foods":foods
 
     })
 
@@ -535,3 +562,10 @@ from datetime import timedelta
 #     consumed = Fconsumed.objects.all()
 #     freezed = Ffreezer.objects.all()
 #     return render(request, "myapp/viewdetails.html", {'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed})
+
+
+
+
+def category_view(request):
+    categories = Fbought.objects.all()
+    return render(request, 'fb.html', {'categories': categories})

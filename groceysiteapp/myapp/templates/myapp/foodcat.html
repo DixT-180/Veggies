@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+     <a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
+<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
+<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
+<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
+<a href="{% url 'foodcat' %}"><h1>Enter food cats</h1></a>
+    
+    <center>
+<h1>Food details </h1>
+<form name="register" method="post" action="../insert_food_cat/">
+    {% csrf_token %}
+    <pre>
+
+  {% comment %} FcID : <input type="text" name="fcid" value="" width="200"> <br> {% endcomment %}
+   Food name : <input type="text" name="food_name" value="" width="200"> <br>
+    Food category :<input type="text" name="food_cat" value="" width="200"> <br>
+  
+   Calories:  <input type="text" name="fcals" value="" width="200"> <br>
+   Price : <input type="text" name="fprice" value="" width="200"> <br>
+
+   <input type="submit" name="foodcat" value="click to submit" width="300" height="100">
+   {% csrf_token %}
+    </pre>
+</form>
+
+
+    </center>
+
+
+  </body>
+</html>

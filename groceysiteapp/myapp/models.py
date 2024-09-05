@@ -11,6 +11,7 @@ class Fbought(models.Model):
     date=models.DateTimeField()
     freeze = models.BooleanField(default=False) 
     expiry = models.DateTimeField(null=True, blank=True)
+    fcategory = models.CharField(max_length=100)
     def __str__(self):
         return self.fbought
     class Meta:
@@ -39,3 +40,14 @@ class Ffreezer(models.Model):
 
     class Meta:
         db_table = "ffreezer"
+
+
+
+class Food(models.Model):
+    food_name = models.CharField(max_length=100,unique=True)
+    food_calorie = models.CharField(max_length=100)
+    food_category = models.CharField(max_length=100)
+    fprice = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "food"

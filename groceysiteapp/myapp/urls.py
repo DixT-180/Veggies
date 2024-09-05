@@ -24,12 +24,16 @@ urlpatterns = [
      path('fb/',views.fb,name="fb"),
       path('fc/',views.fc,name="fc"),
         path('ff/',views.ff,name="ff"),
+        path('foodcat/',views.foodcat,name="foodcat"),
       path('navbar/',views.navbar,name="navbar"),
         path('insert_fbought/',views.insert_fbought,
         name="insert_fbought"),
 
 
            path('insert_fconsumed/',views.insert_fconsumed,name="insert_fconsumed"),
+
+ path('insert_food_cat/',views.insert_food_cat,name="insert_food_cat"),
+           
              path('viewtables/',views.viewtables,name="viewtables"),
 
             #  path('', views.viewtables_exp, name="index"),
