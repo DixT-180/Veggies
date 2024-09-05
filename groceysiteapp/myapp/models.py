@@ -22,11 +22,15 @@ class Fbought(models.Model):
 class Fconsumed(models.Model):
     # f=models.CharField(max_length=20)
     fconsumed = models.CharField(max_length=100)
+    food_freeze = models.BooleanField(default=False) 
     fcamount = models.CharField(max_length=100)
     date=models.DateTimeField()
     
     class Meta:
         db_table = "fconsumed"
+
+
+
 
 class Ffreezer(models.Model):
     ffbought = models.CharField(max_length=100)

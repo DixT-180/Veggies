@@ -44,24 +44,68 @@ def index(request):
     remaining_foods = []
 
     for food_item in food_items:
-        print(food_item, "xxxxx------------------>")
+        # print(food_item, "xxxxx------------------>")
         
         # Calculate the total bought amount of the food item until the current date
-        total_bought = Fbought.objects.filter(fbought=food_item, date__lte=current_date).aggregate(total=Sum('fbamount'))['total'] or 0
+        total_bought_frozen = Fbought.objects.filter(fbought=food_item,freeze=True, date__lte=current_date).aggregate(total=Sum('fbamount'))['total'] or 0
+
+        total_bought_non_frozen = Fbought.objects.filter(fbought=food_item,freeze=False, date__lte=current_date).aggregate(total=Sum('fbamount'))['total'] or 0
 
         # Calculate the total consumed amount of the food item until the current date
-        total_consumed = Fconsumed.objects.filter(fconsumed=food_item, date__lte=current_date).aggregate(total=Sum('fcamount'))['total'] or 0
+        total_consumed_frozen = Fconsumed.objects.filter(fconsumed=food_item,food_freeze=True, date__lte=current_date).aggregate(total=Sum('fcamount'))['total'] or 0
 
+        total_consumed_non_frozen = Fconsumed.objects.filter(fconsumed=food_item,food_freeze=False, date__lte=current_date).aggregate(total=Sum('fcamount'))['total'] or 0
+
+        remaining_frozen =  total_bought_frozen - total_consumed_frozen
+
+        remaining_non_frozen = total_bought_non_frozen - total_consumed_non_frozen
         # Calculate the remaining amount
-        remaining = total_bought - total_consumed
-
+        # remaining = total_bought - total_consumed
+        # print(remaining_foods)
+        # print(remaining_foods,"---------------->")
+        # if remaining_frozen!= 0 and remaining_non_frozen != 0:
         remaining_foods.append({
             'food_item': food_item,
-            'remaining': remaining
+            'remaining_frozen': remaining_frozen,
+            'remaining_non_frozen':remaining_non_frozen
         })
 
+        # Initialize an empty dictionary to hold the summed values
+    summed_data = {}
+
+    for item in remaining_foods:
+        food_item = item['food_item'].strip()
+    
+        if food_item in summed_data:
+        # Add the current item's values to the accumulated totals
+            summed_data[food_item]['remaining_frozen'] += item['remaining_frozen']
+            summed_data[food_item]['remaining_non_frozen'] += item['remaining_non_frozen']
+        else:
+        # If it's the first time we've seen this food item, add it to the dictionary
+            summed_data[food_item] = {
+            'food_item': food_item,
+            'remaining_frozen': item['remaining_frozen'],
+            'remaining_non_frozen': item['remaining_non_frozen']
+        }
+
+# Convert the dictionary back into a list
+    result = list(summed_data.values())
+    print(result,"result----->")
+
+
+
+
+
+
+
+
+
+
+
+
+
     return render(request, 'myapp/index.html', {
-        'remaining_foods': remaining_foods,
+        'remaining_foods': result,
         'date': current_date,'bought_data': bought,"freezer_data":freezed
 
     })
@@ -183,8 +227,9 @@ def viewtables(request):
 def insert_fconsumed(request):
     fconsumed = request.POST['fconsumed']
     fcamount = request.POST['fcamount']
+    food_freeze = request.POST.get('food_freeze') == 'on'
     date=request.POST['date']
-    fc_ = Fconsumed( fconsumed=fconsumed,fcamount=fcamount,date=date)
+    fc_ = Fconsumed( fconsumed=fconsumed,fcamount=fcamount,food_freeze=food_freeze,date=date)
     fc_.save()
     return render(request,'myapp/fc.html',{})
 

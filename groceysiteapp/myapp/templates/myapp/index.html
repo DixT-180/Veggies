@@ -23,14 +23,28 @@
 
 {% if remaining_foods %}
     <h2>Remaining Food as of {{ date }}:</h2>
-    <ul>
-        {% for food in remaining_foods %}
-            <li>{{ food.food_item }}: {{ food.remaining }}</li>
-        {% endfor %}
-    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>Food Item</th>
+                <th>Frozen</th>
+                <th>Non-Frozen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in remaining_foods %}
+                <tr>
+                    <td>{{ food.food_item }}</td>
+                    <td>{{ food.remaining_frozen }}</td>
+                    <td>{{ food.remaining_non_frozen }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     <p>No remaining food data available.</p>
 {% endif %}
+
 <br>
 <br>
 <center>
