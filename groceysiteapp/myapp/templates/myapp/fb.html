@@ -27,11 +27,11 @@
    Food Amount :  <input type="text" name="fbamount" value="" width="200">
     <br>
    
-<label for="category">Choose a Food category:</label>
+<label for="fcategory">Choose a Food category:</label>
     <select name="fcategory" id="fcategory">
         <option value="" disabled selected>Select a Category</option>
         {% for category in categories %}
-            <option value="{{ category.id }}" style="color: black;">{{ category.food_category }}</option>
+            <option value="{{ category.food_category }}" style="color: black;">{{ category.food_category }}</option>
         {% endfor %}
     </select>
 

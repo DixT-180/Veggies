@@ -87,7 +87,7 @@ def index(request):
 
 # Convert the dictionary back into a list
     result = list(summed_data.values())
-    print(result,"result----->")
+    # print(result,"result----->")
 
     return render(request, 'myapp/index.html', {
         'remaining_foods': result,
@@ -104,7 +104,8 @@ def navbar(request):
 
 def fb(request):
     categories = Food.objects.values('food_category').distinct()
-    print(categories,'cats fb')
+    print(categories,'catess')
+    # print(categories,'cats fb')
     return render(request, 'myapp/fb.html', {'categories': categories})
    
 
@@ -126,16 +127,19 @@ def calcount(request):
   
     return render(request, 'myapp/caloriecal.html', {'veg_categories': veg_categories,'fruit_categories':fruit_categories,'carb_categories':carb_categories,'protein_categories':protein_categories})
 
-
+# categories
 
 def insert_fbought(request):
     if request.method == "POST":
         fbought = request.POST.get('fbought', '')
         fbamount = request.POST.get('fbamount', '')
         date = request.POST.get('date', '')
+        fcat = request.POST.get('fcategory','')
+
+        print(fbought,date,fcat,'fffccccaaaaatttttt')
         # Handle the checkbox for freeze
         freeze = request.POST.get('ffreeze') == 'on'
-        fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze)
+        fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze,fcategory=fcat)
         fb_.save()
         return redirect('fb')  # Redirect to the fb page or another page after saving
     return render(request, 'myapp/fb.html', {})
@@ -160,7 +164,7 @@ def insert_food_cat(request):
 
 
 
-
+# bought_data
 
 
 
@@ -178,7 +182,7 @@ def viewtables(request):
     # Get the latest freezer entry for each bought item
     for item in bought_expiry:
 
-        print(item,"itemxxxxxxx",type(item))
+      
         # Initialize the expiry date to None
         expiry_date = None
         
@@ -186,14 +190,14 @@ def viewtables(request):
         if item.freeze:
             # Get the frozen food life from the Ffreezer table
             freezer_item = Ffreezer.objects.filter(ffbought=item).first()
-            print(freezer_item,"xxxtrue")
+           
             if freezer_item and freezer_item.ffreeze:
                 food_life = int(freezer_item.ffreeze)  # Convert to integer
                 expiry_date = item.date + timedelta(days=food_life)
         else:
             # Get the non-frozen food life from the Ffreezer table
             freezer_item = Ffreezer.objects.filter(ffbought=item).first()
-            print(freezer_item,"xxxfalse")
+        
             if freezer_item and freezer_item.fnfreeze:
                 food_life = int(freezer_item.fnfreeze)  # Convert to integer
                 expiry_date = item.date + timedelta(days=food_life)
@@ -273,7 +277,9 @@ def deletefooditem(request,id):
 
 def editfbitem(request,id):
     fb_item=Fbought.objects.get(id=id)
-    return render(request,"myapp/edititem.html",{'fb_item':fb_item
+    categories = Food.objects.values('food_category').distinct()
+    print('categories',categories)
+    return render(request,"myapp/edititem.html",{'fb_item':fb_item,'categories':categories
     })
 
 def editfcitem(request,id):
@@ -300,11 +306,13 @@ def updatefbitem(request,id):
     # new_ffreeze=request.POST['nffreeze']
     new_famount=request.POST['nfamount']
     new_date=request.POST['ndate']
+    food_cat = request.POST['fcategory']
     fb=Fbought.objects.get(id=id)
     fb.fbought = new_fbought
     fb.freeze = new_ffreeze
     fb.fbamount = new_famount
     fb.date = new_date
+    fb.fcategory = food_cat
     fb.save()
     return redirect("/viewtables")
 
@@ -320,7 +328,7 @@ def updatefcitem(request,id):
     fc.save()
     return redirect("/viewtables")
 
-
+# fb_item
 
 
 def updatefreezeritem(request, id):
@@ -490,7 +498,7 @@ def viewdetails_expiry(request):
         item.expiry_date = expiry_date
 
         #for remaining food part 
-    print(bought,"xxxxxxxxxxx")
+  
 
     return render(request, 'myapp/viewdetails.html', {'bought_details': bought
 
@@ -501,16 +509,15 @@ def viewdetails_expiry(request):
 
 
 def category_view(request):
-    categories = Fbought.objects.all()
+    categories = Food.objects.values('food_category').distinct()
     return render(request, 'fb.html', {'categories': categories})
 
 
 def cal_count(request):
     categories = Food.objects.values('food_name').distinct()
-    print(categories,'catsxxxx------>')
     return render(request,'caloriecal.html',{'categories':categories})
  
-
+#   bought_data
 
 
 
@@ -527,7 +534,6 @@ def cal_count(request):
 
 
 def insert_foods_cal(request):
-    print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     fveg=request.POST['fveg']  #food
     fveg_c=request.POST['veg_count']
     ffruit=request.POST['ffruit']   #food

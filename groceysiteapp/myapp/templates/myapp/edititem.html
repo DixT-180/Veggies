@@ -75,6 +75,17 @@
                 </div>
 
 
+
+{% comment %} rfer                    {% endcomment %}
+<label for="fcategory">Choose a Food category:</label>
+    <select name="fcategory" id="fcategory">
+        <option value="{{fb_item.fcategory}}" disabled selected>{{fb_item.fcategory}}</option>
+        {% for category in categories %}
+            <option value="{{ category.food_category }}" style="color: black;">{{ category.food_category }}</option>
+        {% endfor %}
+    </select>
+
+
                     <div class="form-group row">
                  <label class="col-sm-1 col-form-label"></label>
                  <div class ="col-sm-4">
