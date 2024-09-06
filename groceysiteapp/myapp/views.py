@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from .models import Fbought, Fconsumed,Ffreezer,Food
 from django.db.models import Sum
 from django.utils import timezone
+from datetime import timedelta
 # def index(request):
 
 #     return render(request,"myapp/index.html",{})
@@ -60,11 +61,6 @@ def index(request):
         remaining_frozen =  total_bought_frozen - total_consumed_frozen
 
         remaining_non_frozen = total_bought_non_frozen - total_consumed_non_frozen
-        # Calculate the remaining amount
-        # remaining = total_bought - total_consumed
-        # print(remaining_foods)
-        # print(remaining_foods,"---------------->")
-        # if remaining_frozen!= 0 and remaining_non_frozen != 0:
         remaining_foods.append({
             'food_item': food_item,
             'remaining_frozen': remaining_frozen,
@@ -93,17 +89,6 @@ def index(request):
     result = list(summed_data.values())
     print(result,"result----->")
 
-
-
-
- 
-
-
-
-
-
-
-
     return render(request, 'myapp/index.html', {
         'remaining_foods': result,
         'date': current_date,'bought_data': bought,"freezer_data":freezed
@@ -113,8 +98,6 @@ def index(request):
          
         
 
-    # return render(request, "myapp/index.html",{'bought_data': bought, 'bought_data': bought,,"freezer_data":freezed})
-
 def navbar(request):
     return render(request,"myapp/navbar.html")
 
@@ -122,9 +105,8 @@ def navbar(request):
 def fb(request):
     categories = Food.objects.values('food_category').distinct()
     print(categories,'cats fb')
-    # print(categories,"cats")
     return render(request, 'myapp/fb.html', {'categories': categories})
-    # return render(request,"myapp/fb.html")
+   
 
 
 def fc(request):
@@ -134,10 +116,6 @@ def fc(request):
 def ff(request):
     return render(request,"myapp/ff.html")
 
-
-
-# def caloriecal(request):
-#     return render(request,"myapp/caloriecal.html")
 
 
 def calcount(request):
@@ -150,35 +128,20 @@ def calcount(request):
 
 
 
-# def insert_fbought(request):
-#     fbought = request.POST['fbought']
-#     fbamount = request.POST['fbamount']
-#     date=request.POST['date']
-#     fb_ = Fbought( fbought= fbought,fbamount=fbamount,date=date)
-#     fb_.save()
-#     return render(request,'myapp/fb.html',{})
-
-
 def insert_fbought(request):
     if request.method == "POST":
         fbought = request.POST.get('fbought', '')
         fbamount = request.POST.get('fbamount', '')
         date = request.POST.get('date', '')
         # Handle the checkbox for freeze
-        freeze = request.POST.get('ffreeze') == 'on'  # Checkbox is sent as 'on' if checked, otherwise not sent
-
-
-
-       
-        
+        freeze = request.POST.get('ffreeze') == 'on'
         fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze)
         fb_.save()
         return redirect('fb')  # Redirect to the fb page or another page after saving
     return render(request, 'myapp/fb.html', {})
 
 def foodcat(request):
-    pass
-    # return render(request,"myapp/foodcat.html")
+    return render(request,"myapp/foodcat.html")
 
 
 
@@ -192,7 +155,7 @@ def insert_food_cat(request):
      
         food_ = Food(food_name=food_name, food_category=food_cat, food_calorie=fcals, fprice=fprice)
         food_.save()
-        return redirect('myapp/caloriecal.html')  # Redirect to the fb page or another page after saving
+        return redirect('foodcat')  #
     return render(request, 'myapp/caloriecal.html', {})
 
 
@@ -533,76 +496,6 @@ def viewdetails_expiry(request):
 
     })
 
-from django.utils.dateparse import parse_datetime
-from datetime import timedelta
-
-
-# def viewtables_exp(request):
-#     bought = Fbought.objects.all()
-#     consumed = Fconsumed.objects.all()
-#     freezed = Ffreezer.objects.all()
-
-#     for item in bought:
-#         # Initialize the expiry date to None
-#         expiry_date = None
-        
-#         # Check if the item is frozen
-#         if item.freeze:
-#             # Get the frozen food life from the Ffreezer table
-#             freezer_item = Ffreezer.objects.filter(fbought=item).first()
-#             if freezer_item and freezer_item.ffreeze:
-#                 food_life = int(freezer_item.ffreeze)  # Convert to integer
-#                 expiry_date = item.date + timedelta(days=food_life)
-#         else:
-#             # Get the non-frozen food life from the Ffreezer table
-#             freezer_item = Ffreezer.objects.filter(fbought=item).first()
-#             if freezer_item and freezer_item.fnfreeze:
-#                 food_life = int(freezer_item.fnfreeze)  # Convert to integer
-#                 expiry_date = item.date + timedelta(days=food_life)
-
-#         # Set the calculated expiry date to the item
-#         item.expiry_date = expiry_date
-
-#     return render(request, "myapp/index.html",{'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed})
-
-
-
-# def viewtables(request):
-#     bought = Fbought.objects.all()
-#     consumed = Fconsumed.objects.all()
-#     freezed = Ffreezer.objects.all()
-
-#     for item in bought:
-#         # Initialize the expiry date to None
-#         expiry_date = None
-        
-#         # Check if the item is frozen
-#         if item.freeze:
-#             # Get the frozen food life from the Ffreezer table
-#             freezer_item = Ffreezer.objects.filter(fbought=item).first()
-#             if freezer_item and freezer_item.ffreeze:
-#                 food_life = int(freezer_item.ffreeze)  # Convert to integer
-#                 expiry_date = item.date + timedelta(days=food_life)
-#         else:
-#             # Get the non-frozen food life from the Ffreezer table
-#             freezer_item = Ffreezer.objects.filter(fbought=item).first()
-#             if freezer_item and freezer_item.fnfreeze:
-#                 food_life = int(freezer_item.fnfreeze)  # Convert to integer
-#                 expiry_date = item.date + timedelta(days=food_life)
-
-#         # Set the calculated expiry date to the item
-#         item.expiry_date = expiry_date
-
-#     return render(request,"myapp/index.html" ,{'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed})
-
-
-
-
-# def viewtables(request):
-#     bought = Fbought.objects.all()
-#     consumed = Fconsumed.objects.all()
-#     freezed = Ffreezer.objects.all()
-#     return render(request, "myapp/viewdetails.html", {'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed})
 
 
 
