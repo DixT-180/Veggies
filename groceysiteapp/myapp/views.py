@@ -4,6 +4,8 @@ from .models import Fbought, Fconsumed,Ffreezer,Food
 from django.db.models import Sum
 from django.utils import timezone
 from datetime import timedelta
+from django.db.models import Max
+from django.db.models import Q
 # def index(request):
 
 #     return render(request,"myapp/index.html",{})
@@ -88,6 +90,14 @@ def index(request):
 # Convert the dictionary back into a list
     result = list(summed_data.values())
     # print(result,"result----->")
+    distinct_fboughts = Fbought.objects.values('fbought').annotate(fcategory=Max('fcategory'))
+    for item in distinct_fboughts:
+            
+        # Check if the food already exists
+            food_obj, created = Food.objects.update_or_create(
+            food_name=item['fbought'],
+            defaults={'food_category': item['fcategory']})
+    Food.objects.filter(Q(food_category='') | Q(food_category__isnull=True)).update(food_category='unknown')
 
     return render(request, 'myapp/index.html', {
         'remaining_foods': result,
@@ -104,7 +114,13 @@ def navbar(request):
 
 def fb(request):
     categories = Food.objects.values('food_category').distinct()
-    print(categories,'catess')
+    
+
+    
+
+
+
+
     # print(categories,'cats fb')
     return render(request, 'myapp/fb.html', {'categories': categories})
    
@@ -141,6 +157,17 @@ def insert_fbought(request):
         freeze = request.POST.get('ffreeze') == 'on'
         fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze,fcategory=fcat)
         fb_.save()
+
+        # distinct_fboughts = Fbought.objects.values('fbought').annotate(fcategory=Max('fcategory'))
+        # for item in distinct_fboughts:
+        # # Check if the food already exists
+        #     food_obj, created = Food.objects.update_or_create(
+        #     food_name=item['fbought'],
+        #     defaults={'food_category': item['fcategory']})
+        # Food.objects.filter(Q(food_category='') | Q(food_category__isnull=True)).update(food_category='unknown')
+
+
+
         return redirect('fb')  # Redirect to the fb page or another page after saving
     return render(request, 'myapp/fb.html', {})
 

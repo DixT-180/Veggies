@@ -44,10 +44,11 @@ class Ffreezer(models.Model):
 
 
 class Food(models.Model):
-    food_name = models.CharField(max_length=100,unique=True)
+    food_name = models.CharField(max_length=100)
     food_calorie = models.CharField(max_length=100)
     food_category = models.CharField(max_length=100)
     fprice = models.CharField(max_length=100)
 
     class Meta:
         db_table = "food"
+        unique_together = ('food_name', 'food_category')
