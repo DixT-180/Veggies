@@ -29,7 +29,7 @@
     <select name="fcategory" id="fcategory">
         <option value="" disabled selected>Select a Category</option>
         {% for category in categories %}
-            <option value="{{ category.id }}" style="color: black;">{{ category.fbought }}</option>
+            <option value="{{ category.id }}" style="color: black;">{{ category.food_category }}</option>
         {% endfor %}
     </select>
 

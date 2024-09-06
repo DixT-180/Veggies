@@ -120,8 +120,9 @@ def navbar(request):
 
 
 def fb(request):
-    categories = Fbought.objects.values('fbought').distinct()
-    print(categories,"cats")
+    categories = Food.objects.values('food_category').distinct()
+    print(categories,'cats fb')
+    # print(categories,"cats")
     return render(request, 'myapp/fb.html', {'categories': categories})
     # return render(request,"myapp/fb.html")
 
@@ -132,6 +133,21 @@ def fc(request):
 
 def ff(request):
     return render(request,"myapp/ff.html")
+
+
+
+# def caloriecal(request):
+#     return render(request,"myapp/caloriecal.html")
+
+
+def calcount(request):
+    veg_categories = Food.objects.filter(food_category='vegetable').values('food_name').distinct()
+    fruit_categories = Food.objects.filter(food_category='fruit').values('food_name').distinct()
+    carb_categories = Food.objects.filter(food_category='carbs').values('food_name').distinct()
+    protein_categories = Food.objects.filter(food_category='protein').values('food_name').distinct()
+  
+    return render(request, 'myapp/caloriecal.html', {'veg_categories': veg_categories,'fruit_categories':fruit_categories,'carb_categories':carb_categories,'protein_categories':protein_categories})
+
 
 
 # def insert_fbought(request):
@@ -161,7 +177,8 @@ def insert_fbought(request):
     return render(request, 'myapp/fb.html', {})
 
 def foodcat(request):
-    return render(request,"myapp/foodcat.html")
+    pass
+    # return render(request,"myapp/foodcat.html")
 
 
 
@@ -175,8 +192,8 @@ def insert_food_cat(request):
      
         food_ = Food(food_name=food_name, food_category=food_cat, food_calorie=fcals, fprice=fprice)
         food_.save()
-        return redirect('foodcat')  # Redirect to the fb page or another page after saving
-    return render(request, 'myapp/foodcat.html', {})
+        return redirect('myapp/caloriecal.html')  # Redirect to the fb page or another page after saving
+    return render(request, 'myapp/caloriecal.html', {})
 
 
 
@@ -283,6 +300,13 @@ def deletefreezeritem(request,id):
     return redirect("/viewtables")
 
 
+def deletefooditem(request,id):
+    food_item=Food.objects.get(id=id)
+    food_item.delete()
+    # return render(request,'myapp/viewdetails.html',{})
+    return redirect("/viewtables")
+
+
 
 def editfbitem(request,id):
     fb_item=Fbought.objects.get(id=id)
@@ -299,6 +323,10 @@ def editfreezeritem(request,id):
     return render(request,"myapp/editfreeze.html",{'fz_item':fz_item
     })
 
+def editfooditem(request,id):
+    food_eitem=Food.objects.get(id=id)
+    return render(request,"myapp/editfood.html",{'food_eitem':food_eitem
+    })
 
 
 
@@ -331,6 +359,7 @@ def updatefcitem(request,id):
 
 
 
+
 def updatefreezeritem(request, id):
     if request.method == "POST":
         try:
@@ -358,7 +387,19 @@ def updatefreezeritem(request, id):
 
 
 
-
+def updatefooditem(request,id):
+    # new_fid=request.POST['nid']
+    food_ename=request.POST['food_ename']
+    food_cat=request.POST['food_cat']
+    food_cal=request.POST['food_cal']
+    food_eprice = request.POST['fprice']
+    food_=Food.objects.get(id=id)
+    food_.food_name = food_ename
+    food_.food_category = food_cat
+    food_.food_calorie= food_cal
+    food_.fprice= food_eprice
+    food_.save()
+    return redirect("/viewtables")
 
 
 
@@ -569,3 +610,64 @@ from datetime import timedelta
 def category_view(request):
     categories = Fbought.objects.all()
     return render(request, 'fb.html', {'categories': categories})
+
+
+def cal_count(request):
+    categories = Food.objects.values('food_name').distinct()
+    print(categories,'catsxxxx------>')
+    return render(request,'caloriecal.html',{'categories':categories})
+ 
+
+
+
+
+# def insert_ffreeze(request):
+#     ffbought = request.POST['ffbought']
+#     flfreeze = request.POST['flfreeze']
+#     flnfreeze = request.POST['flnfreeze']
+#     ff= Ffreezer( ffbought=ffbought, ffreeze= flfreeze,fnfreeze=flnfreeze)
+#     ff.save()
+#     return render(request,'myapp/ff.html',{})
+
+
+
+
+
+def insert_foods_cal(request):
+    print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    fveg=request.POST['fveg']  #food
+    fveg_c=request.POST['veg_count']
+    ffruit=request.POST['ffruit']   #food
+    ffruit_c=request.POST['fruit_count']
+    fcarbs=request.POST['fcarb']    #food 
+    fcarbs_c=request.POST['carbs_count']
+    fprotein=request.POST['fprotein']  #food
+    fprotein_c=request.POST['protein_count']
+
+    fveg_obj = Food.objects.get(food_name=fveg)
+   
+    ffruit_obj = Food.objects.get(food_name=ffruit)
+    fcarbs_obj = Food.objects.get(food_name=fcarbs)
+    fprotein_obj = Food.objects.get(food_name=fprotein)
+
+
+    fveg_cal = fveg_obj.food_calorie
+    ffruit_cal = ffruit_obj.food_calorie
+    fcarbs_cal = fcarbs_obj.food_calorie
+    fprotein_cal = fprotein_obj.food_calorie
+
+    total_fveg_cal =  int(fveg_cal) * int(fveg_c)
+    total_ffruit_cal = int(ffruit_cal) * int(ffruit_c)
+    total_fprotein_cal = int(fprotein_cal) * int(fprotein_c)
+    total_fcarbs_cal = int(fcarbs_cal) * int(fcarbs_c)
+
+# caloriecal
+
+    print(total_fcarbs_cal,total_ffruit_cal,total_fprotein_cal,total_fveg_cal)
+    return redirect('calcount')
+    # return render(request,'myapp/caloriecal.html',{})
+
+
+    
+#  return redirect('fb')  # Redirect to the fb page or another page after saving
+#     return render(request, 'myapp/fb.html', {})

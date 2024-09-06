@@ -12,6 +12,7 @@
 <a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
 <a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
 <a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
+<a href="{% url 'calcount' %}"><h1>diet plan</h1></a>
     
     <center>
         <h3>Food brought <h3>
@@ -159,6 +160,7 @@
         <th>Food Calorie</th>
         <th>food Category</th>
         <th>Food Price</th>
+         <th>Actions</th>
     </tr>
     {% for item in foods %}
     <tr>
@@ -169,6 +171,13 @@
         <td>{{ item.fprice }}</td>
 
         <td><!-- Actions like delete, edit --></td>
+              <td>
+                        <a href="/deletefooditem/{{ item.id }}">delete</a>
+                       <a href="/editfooditem/{{ item.id }}">Edit</a>
+
+
+                    </td>
+               
     </tr>
     {% endfor %}
 </table>

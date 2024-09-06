@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+     <a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
+<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
+<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
+<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
+<a href="{% url 'foodcat' %}"><h1>Enter food cats</h1></a>
+    
+    <center>
+<h1>calorie counter </h1>
+<form name="register" method="post" action="../insert_foods_cal/">
+    {% csrf_token %}
+    <pre>
+
+  {% comment %} FcID : <input type="text" name="fcid" value="" width="200"> <br> {% endcomment %}
+   veg food count<input type="text" name="veg_count" value="" width="200"> 
+      
+<label for="fveg">Choose a vegetable:</label>
+    <select name="fveg" id="fveg">
+        <option value="" disabled selected>Select a Category</option>
+        {% for category in veg_categories %}
+            <option value="{{ category.food_name }}">{{ category.food_name }}</option>
+        {% endfor %}
+    </select>
+   
+
+    <br>
+   Fruit count<input type="text" name="fruit_count" value="" width="200"> 
+      
+<label for="ffruit">Choose a fruit:</label>
+    <select name="ffruit" id="ffruit">
+        <option value="" disabled selected>Select a Category</option>
+        {% for category in fruit_categories %}
+            <option value="{{ category.food_name }}">{{ category.food_name }}</option>
+        {% endfor %}
+    </select>
+
+    <br>
+   carbs count<input type="text" name="carbs_count" value="" width="200"> 
+      
+<label for="fcarbs">Choose a carb diet:</label>
+    <select name="fcarb" id="fcarb">
+        <option value="" disabled selected>Select a Category</option>
+        {% for category in carb_categories %}
+            <option value="{{ category.food_name }}">{{ category.food_name }}</option>
+        {% endfor %}
+    </select>
+
+    <br>
+protein count<input type="text" name="protein_count" value="" width="200"> 
+
+    <label for="fprotein">Choose a protein diet:</label>
+    <select name="fprotein" id="fprotein">
+        <option value="" disabled selected>Select a Category</option>
+        {% for category in protein_categories %}
+            <option value="{{ category.food_name }}">{{ category.food_name }}</option>
+        {% endfor %}
+    </select>
+
+    <br>
+
+
+   <input type="submit" name="foodcat" value="click to submit" width="300" height="100">
+   {% csrf_token %}
+    </pre>
+</form>
+
+
+    </center>
+
+
+  </body>
+</html>

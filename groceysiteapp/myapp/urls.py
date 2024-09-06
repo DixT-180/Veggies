@@ -25,9 +25,15 @@ urlpatterns = [
       path('fc/',views.fc,name="fc"),
         path('ff/',views.ff,name="ff"),
         path('foodcat/',views.foodcat,name="foodcat"),
+         path('calcount/',views.calcount,name="calcount"),
+                #  path('caloriecal/',views.caloriecal,name="caloriecal"),
       path('navbar/',views.navbar,name="navbar"),
         path('insert_fbought/',views.insert_fbought,
         name="insert_fbought"),
+
+           path('insert_foods_cal/',views.insert_foods_cal,
+        name="insert_foods_cal"),
+
 
 
            path('insert_fconsumed/',views.insert_fconsumed,name="insert_fconsumed"),
@@ -46,6 +52,8 @@ urlpatterns = [
                  path('deletefreezeritem/<int:id>',views.deletefreezeritem,
               name="deletefreezeritem"),
 
+                   path('deletefooditem/<int:id>',views.deletefooditem,name="deletefooditem"),
+
 
 
               path('editfbitem/<int:id>',views.editfbitem,name="editfbitem"),
@@ -54,6 +62,8 @@ urlpatterns = [
 
 
               path('editfcitem/<int:id>',views.editfcitem,name="editfcitem"),
+
+                path('editfooditem/<int:id>',views.editfooditem,name="editfooditem"),
               
 
               path('editfreezeritem/<int:id>',views.editfreezeritem,name="editfreezeritem"),
@@ -69,7 +79,7 @@ path('updatefbitem/<int:id>', views.updatefbitem, name='updatefbitem')
              path('updatefreezeritem/<int:id>',views.updatefreezeritem,name="updatefreezeritem")
 
               ,
-
+ path('updatefooditem/<int:id>',views.updatefooditem,name="updatefooditem"),
 
          path('remaining_food/', views.remaining_food, name="remaining_food"),
 
