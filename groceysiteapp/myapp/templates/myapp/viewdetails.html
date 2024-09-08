@@ -13,9 +13,9 @@
 <a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
 <a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
 <a href="{% url 'calcount' %}"><h1>diet plan</h1></a>
-<a href="{% url 'foodcat' %}"><h1>create food cat</h1></a>
+<a href="{% url 'foodcat' %}"><h1>create food cat</h1></a> 
     
-    <center>
+    {% comment %} <center>
         <h3>Food brought <h3>
         <table class="table table-striped table-bordered table-sm">
             <thead class="thead-dark">
@@ -52,7 +52,45 @@
                 {% endfor %}
             </tbody>
         </table>
-    </center>
+    </center>  {% endcomment %}
+
+
+
+    
+   <center>
+    <h3> food bought details <h3>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Food Bought</th>
+        <th>Frozen?</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>Expiry Date</th>
+        <th>Actions</th>
+    </tr>
+    {% for item in bought_expiry %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.fbought }}</td>
+        <td>{{ item.freeze }}</td>
+        <td>{{ item.fbamount }}</td>
+        <td>{{ item.fcategory }}</td>
+       <td>{{ item.date|date:"M j, Y" }}</td>
+<td>{{ item.expiry_date|date:"M j, Y" }}</td>
+<td>
+                        <a href="/deletefbitem/{{ item.id }}">delete</a>
+                       <a href="/editfbitem/{{ item.id }}">Edit</a>
+
+
+                    </td>
+        <td><!-- Actions like delete, edit --></td>
+    </tr>
+    {% endfor %}
+</table>
+
+</center> 
 <br>
 <br>
 <br>
@@ -126,32 +164,7 @@
 <br>
 <br>
 
-<center>
-    <h3> Food left  <h3>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Food Bought</th>
-        <th>Frozen?</th>
-        <th>Amount</th>
-        <th>Date</th>
-        <th>Expiry Date</th>
-        <th>Actions</th>
-    </tr>
-    {% for item in bought_expiry %}
-    <tr>
-        <td>{{ item.id }}</td>
-        <td>{{ item.fbought }}</td>
-        <td>{{ item.freeze }}</td>
-        <td>{{ item.fbamount }}</td>
-       <td>{{ item.date|date:"M j, Y" }}</td>
-<td>{{ item.expiry_date|date:"M j, Y" }}</td>
-        <td><!-- Actions like delete, edit --></td>
-    </tr>
-    {% endfor %}
-</table>
 
-</center> 
 
 <center>
     <h3>Food details </h3>

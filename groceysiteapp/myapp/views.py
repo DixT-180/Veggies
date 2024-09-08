@@ -7,7 +7,7 @@ from datetime import timedelta
 from django.db.models import Max
 from django.db.models import Q
 # def index(request):
-
+from django.db import IntegrityError
 #     return render(request,"myapp/index.html",{})
 
 #done
@@ -92,16 +92,27 @@ def index(request):
     # print(result,"result----->")
     distinct_fboughts = Fbought.objects.values('fbought').annotate(fcategory=Max('fcategory'))
     for item in distinct_fboughts:
+        food_obj = Food.objects.filter(food_name=item['fbought']).first()
+        if food_obj:
+            food_obj.food_category = item['fcategory']
+            food_obj.save()
+        else:
+            Food.objects.create(food_name=item['fbought'], food_category=item['fcategory'])
+
+    # distinct_fboughts = Fbought.objects.values('fbought').annotate(fcategory=Max('fcategory'))
+    # for item in distinct_fboughts:
             
-        # Check if the food already exists
-            food_obj, created = Food.objects.update_or_create(
-            food_name=item['fbought'],
-            defaults={'food_category': item['fcategory']})
-    Food.objects.filter(Q(food_category='') | Q(food_category__isnull=True)).update(food_category='unknown')
+    #     # Check if the food already exists
+    #         food_obj, created = Food.objects.update_or_create(
+    #         food_name=item['fbought'],
+    #         defaults={'food_category': item['fcategory']})
+    # Food.objects.filter(Q(food_category='') | Q(food_category__isnull=True)).update(food_category='unknown')
 
     return render(request, 'myapp/index.html', {
         'remaining_foods': result,
-        'date': current_date,'bought_data': bought,"freezer_data":freezed
+        'date': current_date,
+        'bought_data': bought,
+        "freezer_data":freezed
     
 
     })
@@ -157,6 +168,21 @@ def insert_fbought(request):
         freeze = request.POST.get('ffreeze') == 'on'
         fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze,fcategory=fcat)
         fb_.save()
+        try:
+            # Check if the food item already exists
+            if not Food.objects.filter(food_name=fbought).exists():
+                # Save to Food only if it doesn't exist
+                food_ = Food(food_name=fbought, food_category=fcat)
+                food_.save()
+            else:
+                print(f"Food item '{fbought}' already exists.")
+
+        except IntegrityError as e:
+            # Handle duplicate entry error
+            print(f"IntegrityError: {e}")
+            # Optionally, you can show a user-friendly message or redirect
+            # return render(request, 'error_template.html', {'error': 'Duplicate food item'})
+    
 
         # distinct_fboughts = Fbought.objects.values('fbought').annotate(fcategory=Max('fcategory'))
         # for item in distinct_fboughts:
@@ -182,10 +208,16 @@ def insert_food_cat(request):
         food_cat = request.POST.get('food_cat', '')
         fcals = request.POST.get('fcals', '')
         fprice = request.POST.get('fprice', '')
-        
+        try:
+            food_ = Food(food_name=food_name, food_category=food_cat, food_calorie=fcals, fprice=fprice)
+            food_.save()
+
+
+        except IntegrityError as e:
+            # Handle duplicate entry error
+            print(f"IntegrityError: {e}")
      
-        food_ = Food(food_name=food_name, food_category=food_cat, food_calorie=fcals, fprice=fprice)
-        food_.save()
+        
         return redirect('foodcat')  #
     return render(request, 'myapp/caloriecal.html', {})
 
@@ -231,7 +263,8 @@ def viewtables(request):
 
         # Set the calculated expiry date to the item
         item.expiry_date = expiry_date
-
+        item.save()
+        # print(bought.expiry)
         #for remaining food part 
 
     return render(request, 'myapp/viewdetails.html', {'bought_expiry': bought_expiry,'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed,"foods":foods
@@ -366,12 +399,12 @@ def updatefreezeritem(request, id):
 
             # Update the fields with new values from the form
             fbought_name = request.POST.get('ffbought')
-            fbought_instance = Fbought.objects.get(fbought=fbought_name)
+            # fbought_instance = Fbought.objects.get(fbought=fbought_name)
 
             new_fz = request.POST.get('flfreeze')
             new_nfz = request.POST.get('flnfreeze')
 
-            fz.fbought = fbought_instance
+            fz.ffbought = fbought_name
             fz.ffreeze = new_fz
             fz.fnfreeze = new_nfz
             fz.save()
@@ -570,7 +603,7 @@ def insert_foods_cal(request):
     fprotein=request.POST['fprotein']  #food
     fprotein_c=request.POST['protein_count']
 
-    fveg_obj = Food.objects.get(food_name=fveg)
+    fveg_obj = Food.objects.get(food_name=fveg) #apple--->
    
     ffruit_obj = Food.objects.get(food_name=ffruit)
     fcarbs_obj = Food.objects.get(food_name=fcarbs)
@@ -582,17 +615,18 @@ def insert_foods_cal(request):
     fcarbs_cal = fcarbs_obj.food_calorie
     fprotein_cal = fprotein_obj.food_calorie
 
-    total_fveg_cal =  int(fveg_cal) * int(fveg_c)
-    total_ffruit_cal = int(ffruit_cal) * int(ffruit_c)
-    total_fprotein_cal = int(fprotein_cal) * int(fprotein_c)
-    total_fcarbs_cal = int(fcarbs_cal) * int(fcarbs_c)
+    total_fveg_cal =  float(fveg_cal) * float(fveg_c)
+    total_ffruit_cal = float(ffruit_cal) * float(ffruit_c)
+    total_fprotein_cal = float(fprotein_cal) * float(fprotein_c)
+    total_fcarbs_cal = float(fcarbs_cal) * float(fcarbs_c)
+    totals_ = total_fveg_cal + total_ffruit_cal + total_fprotein_cal + total_fcarbs_cal
 
 # caloriecal
 
     print(total_fcarbs_cal,total_ffruit_cal,total_fprotein_cal,total_fveg_cal)
-    return redirect('calcount')
-    # return render(request,'myapp/caloriecal.html',{})
-
+    # return redirect('calcount')
+    return render(request,'myapp/index.html',{'totals':totals_})
+   
 
     
 #  return redirect('fb')  # Redirect to the fb page or another page after saving
