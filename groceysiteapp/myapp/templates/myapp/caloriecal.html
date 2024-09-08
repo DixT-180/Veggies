@@ -7,13 +7,9 @@
     <title>HTML 5 Boilerplate</title>
     <link rel="stylesheet" href="style.css">
   </head>
+  {% include "myapp/navbar.html" %}
   <body>
-   <a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
-<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
-<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
-<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
-<a href="{% url 'calcount' %}"><h1>diet plan</h1></a>
-<a href="{% url 'foodcat' %}"><h1>create food cat</h1></a>
+
     <center>
 <h1>calorie counter </h1>
 <form name="register" method="post" action="../insert_foods_cal/">

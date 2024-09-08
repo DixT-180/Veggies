@@ -8,104 +8,57 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-   <a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
-<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
-<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
-<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
-<a href="{% url 'calcount' %}"><h1>diet plan</h1></a>
-<a href="{% url 'foodcat' %}"><h1>create food cat</h1></a> 
-    
-    {% comment %} <center>
-        <h3>Food brought <h3>
+{% include "myapp/navbar.html" %}
+
+    <center>
+        <h5>Food Bought Details</h5>
         <table class="table table-striped table-bordered table-sm">
             <thead class="thead-dark">
                 <tr>
-                    <th>id</th>
-                    <th>fbought</th>
-                     <th>freeze?</th>
-                    <th>fbamount</th>
-                     <th>category</th>
-                    <th>date</th>
-                     <th>Expiry date</th>
-                    <th>Actions</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Food Bought</th>
+                    <th scope="col">Frozen?</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Expiry Date</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for obj in bought_data %}
+                {% for item in bought_expiry %}
                 <tr>
-                    <td>{{ obj.id }}</td>
-                    <td>{{ obj.fbought }}</td>
-                    
-                      <td>{{ obj.freeze }}</td>
-                    <td>{{ obj.fbamount }}</td>
-                    <td>{{ obj.fcategory }}</td>
-                 <td>{{ obj.date|date:"M j, Y" }}</td>
-<td>{{ obj.expiry|date:"M j, Y" }}</td>
-
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.fbought }}</td>
+                    <td>{{ item.freeze }}</td>
+                    <td>{{ item.fbamount }}</td>
+                    <td>{{ item.fcategory }}</td>
+                    <td>{{ item.date|date:"M j, Y" }}</td>
+                    <td>{{ item.expiry_date|date:"M j, Y" }}</td>
                     <td>
-                        <a href="/deletefbitem/{{ obj.id }}">delete</a>
-                       <a href="/editfbitem/{{ obj.id }}">Edit</a>
-
-
+                        <a href="/deletefbitem/{{ item.id }}">delete</a>
+                        <a href="/editfbitem/{{ item.id }}">Edit</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </center>  {% endcomment %}
-
-
-
-    
-   <center>
-    <h3> food bought details <h3>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Food Bought</th>
-        <th>Frozen?</th>
-        <th>Amount</th>
-        <th>Category</th>
-        <th>Date</th>
-        <th>Expiry Date</th>
-        <th>Actions</th>
-    </tr>
-    {% for item in bought_expiry %}
-    <tr>
-        <td>{{ item.id }}</td>
-        <td>{{ item.fbought }}</td>
-        <td>{{ item.freeze }}</td>
-        <td>{{ item.fbamount }}</td>
-        <td>{{ item.fcategory }}</td>
-       <td>{{ item.date|date:"M j, Y" }}</td>
-<td>{{ item.expiry_date|date:"M j, Y" }}</td>
-<td>
-                        <a href="/deletefbitem/{{ item.id }}">delete</a>
-                       <a href="/editfbitem/{{ item.id }}">Edit</a>
-
-
-                    </td>
-        <td><!-- Actions like delete, edit --></td>
-    </tr>
-    {% endfor %}
-</table>
-
-</center> 
+    </center> 
 <br>
 <br>
 <br>
 <br>
-
+<br>
     <center>
-         <h3>Food consumed<h3>
+        <h5>Food Consumed</h5>
         <table class="table table-striped table-bordered table-sm">
             <thead class="thead-dark">
                 <tr>
-                    <th>id</th>
-                    <th>fconsumed</th>
-                    <th>fcamount</th>
-                     <th>frozen?</th>
-                    <th>date</th>
+                    <th>ID</th>
+                    <th>Food Consumed</th>
+                    <th>Amount</th>
+                    <th>Frozen?</th>
+                    <th>Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -115,31 +68,31 @@
                     <td>{{ obj.id }}</td>
                     <td>{{ obj.fconsumed }}</td>
                     <td>{{ obj.fcamount }}</td>
-                      <td>{{ obj.food_freeze }}</td>
-                 <td>{{ obj.date|date:"M j, Y" }}</td>
-
-                  <td>
+                    <td>{{ obj.food_freeze }}</td>
+                    <td>{{ obj.date|date:"M j, Y" }}</td>
+                    <td>
                         <a href="/deletefcitem/{{ obj.id }}">delete</a>
-                         <a href="/editfcitem/{{ obj.id }}">Edit</a>
+                        <a href="/editfcitem/{{ obj.id }}">Edit</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </center>
-
 <br>
 <br>
 <br>
-<center>
-     <h3>Food freeze info <h3>
+<br>
+<br>
+    <center>
+        <h5>Food Freeze Info</h5>
         <table class="table table-striped table-bordered table-sm">
             <thead class="thead-dark">
                 <tr>
-                    <th>id</th>
-                    <th>fbought</th>
-                    <th>food life freeze</th>
-                    <th>food life without freeze</th>
+                    <th>ID</th>
+                    <th>Food Bought</th>
+                    <th>Food Life Freeze</th>
+                    <th>Food Life Without Freeze</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -150,53 +103,48 @@
                     <td>{{ obj.ffbought }}</td>
                     <td>{{ obj.ffreeze }}</td>
                     <td>{{ obj.fnfreeze }}</td>
-                  <td>
+                    <td>
                         <a href="/deletefreezeritem/{{ obj.id }}">delete</a>
-                         <a href="/editfreezeritem/{{ obj.id }}">Edit</a>
+                        <a href="/editfreezeritem/{{ obj.id }}">Edit</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </center>
-
 <br>
 <br>
 <br>
-
-
-
-<center>
-    <h3>Food details </h3>
-<table>
-    <tr>
-        <th>Food name</th>
-        <th>Food Calorie</th>
-        <th>food Category</th>
-        <th>Food Price</th>
-         <th>Actions</th>
-    </tr>
-    {% for item in foods %}
-    <tr>
-        <td>{{ item.food_name }}</td>
-        <td>{{ item.food_calorie }}</td>
-       
-        <td>{{ item.food_category }}</td>
-        <td>{{ item.fprice }}</td>
-
-        <td><!-- Actions like delete, edit --></td>
-              <td>
+<br>
+<br>
+    <center>
+        <h5>Food Details</h5>
+        <table class="table table-striped table-bordered table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Food Name</th>
+                    <th>Food Calorie</th>
+                    <th>Food Category</th>
+                    <th>Food Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in foods %}
+                <tr>
+                    <td>{{ item.food_name }}</td>
+                    <td>{{ item.food_calorie }}</td>
+                    <td>{{ item.food_category }}</td>
+                    <td>{{ item.fprice }}</td>
+                    <td>
                         <a href="/deletefooditem/{{ item.id }}">delete</a>
-                       <a href="/editfooditem/{{ item.id }}">Edit</a>
-
-
+                        <a href="/editfooditem/{{ item.id }}">Edit</a>
                     </td>
-               
-    </tr>
-    {% endfor %}
-</table>
-
-</center>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </center>
 
 </body>
 </html>

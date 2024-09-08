@@ -26,7 +26,7 @@ urlpatterns = [
         path('ff/',views.ff,name="ff"),
         path('foodcat/',views.foodcat,name="foodcat"),
          path('calcount/',views.calcount,name="calcount"),
-                #  path('caloriecal/',views.caloriecal,name="caloriecal"),
+               
       path('navbar/',views.navbar,name="navbar"),
         path('insert_fbought/',views.insert_fbought,
         name="insert_fbought"),
@@ -42,7 +42,7 @@ urlpatterns = [
            
              path('viewtables/',views.viewtables,name="viewtables"),
 
-            #  path('', views.viewtables_exp, name="index"),
+         
 
              path('deletefbitem/<int:id>',views.deletefbitem,name="deletefbitem"),
 
@@ -81,7 +81,7 @@ path('updatefbitem/<int:id>', views.updatefbitem, name='updatefbitem')
               ,
  path('updatefooditem/<int:id>',views.updatefooditem,name="updatefooditem"),
 
-         path('remaining_food/', views.remaining_food, name="remaining_food"),
+
 
 
 
