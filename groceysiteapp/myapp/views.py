@@ -7,6 +7,8 @@ from datetime import timedelta
 from django.db.models import Max
 from django.db import IntegrityError
 
+from django.core.paginator import Paginator
+
 #done
 def index(request):
     bought = Fbought.objects.all()
@@ -95,13 +97,19 @@ def index(request):
             food_obj.save()
         else:
             Food.objects.create(food_name=item['fbought'], food_category=item['fcategory'])
+    
 
+    paginator = Paginator(food_items, 10)  # Show 10 food items per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, 'myapp/index.html', {
         'remaining_foods': result,
         'date': current_date,
         'bought_data': bought,
-        "freezer_data":freezed
+        "freezer_data":freezed,
+        "page_obj": page_obj
     
 
     })
@@ -151,12 +159,20 @@ def insert_fbought(request):
         fbamount = request.POST.get('fbamount', '')
         date = request.POST.get('date', '')
         fcat = request.POST.get('fcategory','')
+        
 
     
         # Handle the checkbox for freeze
         freeze = request.POST.get('ffreeze') == 'on'
-        fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze,fcategory=fcat)
-        fb_.save()
+        if fcat=='new':
+            new_cat = request.POST.get('new_category','')
+            fcat=new_cat
+            fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze,fcategory=fcat)
+            fb_.save()
+        else:
+            fb_ = Fbought(fbought=fbought, fbamount=fbamount, date=date, freeze=freeze,fcategory=fcat)
+            fb_.save()
+
         try:
             # Check if the food item already exists
             if not Food.objects.filter(food_name=fbought).exists():
@@ -206,7 +222,7 @@ def insert_food_cat(request):
 
 
 
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def viewtables(request):
     bought = Fbought.objects.all()
     consumed = Fconsumed.objects.all()
@@ -243,11 +259,27 @@ def viewtables(request):
 
         # Set the calculated expiry date to the item
         item.expiry_date = expiry_date
- 
+    
+    page = request.GET.get('page', 1)  # Get the page number from the request
 
-    return render(request, 'myapp/viewdetails.html', {'bought_expiry': bought_expiry,'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed,"foods":foods
+    paginator = Paginator(bought_expiry, 10)  # Show 10 objects per page
+
+    try:
+        objects = paginator.page(page)
+    except PageNotAnInteger:
+        # If the page is not an integer, show the first page
+        objects = paginator.page(1)
+    except EmptyPage:
+        # If the page is out of range, show the last existing page
+        objects = paginator.page(paginator.num_pages)
+    print(objects,'xxx-------------->')
+
+
+
+    return render(request, 'myapp/viewdetails.html', {'bought_expiry': bought_expiry,'bought_data': bought, 'consumed_data': consumed,"freezer_data":freezed,"foods":foods,"objects":objects
 
     })
+
 
 
 
@@ -450,39 +482,58 @@ def cal_count(request):
 
 
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Food
+
 def insert_foods_cal(request):
-    fveg=request.POST['fveg']  #food
-    fveg_c=request.POST['veg_count']
-    ffruit=request.POST['ffruit']   #food
-    ffruit_c=request.POST['fruit_count']
-    fcarbs=request.POST['fcarb']    #food 
-    fcarbs_c=request.POST['carbs_count']
-    fprotein=request.POST['fprotein']  #food
-    fprotein_c=request.POST['protein_count']
+    if request.method == 'POST':
+        try:
+            fveg = request.POST.get('fveg', '').strip()
+            fveg_c = request.POST.get('veg_count', '').strip()
+            ffruit = request.POST.get('ffruit', '').strip()
+            ffruit_c = request.POST.get('fruit_count', '').strip()
+            fcarbs = request.POST.get('fcarb', '').strip()
+            fcarbs_c = request.POST.get('carbs_count', '').strip()
+            fprotein = request.POST.get('fprotein', '').strip()
+            fprotein_c = request.POST.get('protein_count', '').strip()
 
-    fveg_obj = Food.objects.get(food_name=fveg) #apple--->
-   
-    ffruit_obj = Food.objects.get(food_name=ffruit)
-    fcarbs_obj = Food.objects.get(food_name=fcarbs)
-    fprotein_obj = Food.objects.get(food_name=fprotein)
+            # Check if any value is empty
+            if not all([fveg, fveg_c, ffruit, ffruit_c, fcarbs, fcarbs_c, fprotein, fprotein_c]):
+                raise ValueError("All fields must be filled.")
 
+            # Get Food objects
+            fveg_obj = Food.objects.get(food_name=fveg)
+            ffruit_obj = Food.objects.get(food_name=ffruit)
+            fcarbs_obj = Food.objects.get(food_name=fcarbs)
+            fprotein_obj = Food.objects.get(food_name=fprotein)
 
-    fveg_cal = fveg_obj.food_calorie
-    ffruit_cal = ffruit_obj.food_calorie
-    fcarbs_cal = fcarbs_obj.food_calorie
-    fprotein_cal = fprotein_obj.food_calorie
+            # Get calorie values
+            fveg_cal = fveg_obj.food_calorie
+            ffruit_cal = ffruit_obj.food_calorie
+            fcarbs_cal = fcarbs_obj.food_calorie
+            fprotein_cal = fprotein_obj.food_calorie
 
-    total_fveg_cal =  float(fveg_cal) * float(fveg_c)
-    total_ffruit_cal = float(ffruit_cal) * float(ffruit_c)
-    total_fprotein_cal = float(fprotein_cal) * float(fprotein_c)
-    total_fcarbs_cal = float(fcarbs_cal) * float(fcarbs_c)
-    totals_ = total_fveg_cal + total_ffruit_cal + total_fprotein_cal + total_fcarbs_cal
+            # Calculate total calories
+            total_fveg_cal = float(fveg_cal) * float(fveg_c)
+            total_ffruit_cal = float(ffruit_cal) * float(ffruit_c)
+            total_fprotein_cal = float(fprotein_cal) * float(fprotein_c)
+            total_fcarbs_cal = float(fcarbs_cal) * float(fcarbs_c)
+            totals_ = total_fveg_cal + total_ffruit_cal + total_fprotein_cal + total_fcarbs_cal
 
+            return render(request, 'myapp/index.html', {'totals': totals_})
+        
+        except ValueError as e:
+            messages.error(request, "enter calories first")
+            return redirect('index')  # Redirect to the form page
 
+        except Food.DoesNotExist:
+            messages.error(request, 'One or more food items are not found. Please enter valid food items.')
+            return redirect('index')
 
-    print(total_fcarbs_cal,total_ffruit_cal,total_fprotein_cal,total_fveg_cal)
-    # return redirect('calcount')
-    return render(request,'myapp/index.html',{'totals':totals_})
-   
+        except Exception as e:
+            messages.error(request, f'An unexpected error occurred: {str(e)}')
+            return redirect('index')
 
-    
+    # If not POST request, render the form
+    return render(request, 'myapp/index.html')

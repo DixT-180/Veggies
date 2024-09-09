@@ -1,48 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HTML 5 Boilerplate</title>
     <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-      {% include "myapp/navbar.html" %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS to handle the visibility of the new category input field */
+        .category-input {
+            display: none; /* Hide initially */
+        }
+    </style>
+</head>
+<body>
+    {% include "myapp/navbar.html" %}
     <center>
+        <form name="register" method="post" action="../insert_fbought/">
+            {% csrf_token %}
+            <div class="container">
+                <div class="form-group">
+                    <label for="fbought">Food Bought:</label>
+                    <input type="text" class="form-control" id="fbought" name="fbought" required>
+                </div>
 
-    
-<form name="register" method="post" action="../insert_fbought/">
-    {% csrf_token %}
-    <pre>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="id_freeze" name="ffreeze">
+                    <label class="form-check-label" for="id_freeze">Check if frozen</label>
+                </div>
 
-  {% comment %} FID : <input type="text" name="fid" value="" width="200"> <br> {% endcomment %}
-   Food Bought : <input type="text" name="fbought" value="" width="200"> <br>
-  Freeze??? : <input type="checkbox" id="id_freeze" name="ffreeze">
-  <label for="id_freeze">Check if frozen</label> <br>
-   Food Amount :  <input type="text" name="fbamount" value="" width="200">
-    <br>
-   
-<label for="fcategory">Choose a Food category:</label>
-    <select name="fcategory" id="fcategory">
-        <option value="" disabled selected>Select a Category</option>
-        {% for category in categories %}
-            <option value="{{ category.food_category }}" style="color: black;">{{ category.food_category }}</option>
-        {% endfor %}
-    </select>
+                <div class="form-group">
+                    <label for="fbamount">Food Amount:</label>
+                    <input type="text" class="form-control" id="fbamount" name="fbamount">
+                </div>
 
+                <div class="form-group">
+                    <label for="fcategory">Choose a Food category:</label>
+                    <select class="form-control" name="fcategory" id="fcategory" onchange="toggleNewCategoryField()">
+                        <option value="" disabled selected>Select a Category</option>
+                        <option value="new">Input new one</option>
+                        {% for category in categories %}
+                            <option value="{{ category.food_category }}">{{ category.food_category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
+                <div class="form-group category-input" id="newCategoryDiv">
+                    <label for="new_category">Or enter a new category:</label>
+                    <input type="text" class="form-control" name="new_category" id="new_category" placeholder="Enter new category">
+                </div>
 
-   Date : <input type="text" name="date" value="" width="200"> <br>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" class="form-control" id="date" name="date">
+                </div>
 
-   <input type="submit" name="fb" value="click to submit" width="300" height="100">
-   {% csrf_token %}
-    </pre>
-</form>
-
-
+                <button type="submit" class="btn btn-primary">Click to submit</button>
+            </div>
+        </form>
     </center>
 
+    <script>
+        function toggleNewCategoryField() {
+            var selectElement = document.getElementById("fcategory");
+            var newCategoryDiv = document.getElementById("newCategoryDiv");
 
-  </body>
+            if (selectElement.value === "new") {
+                newCategoryDiv.classList.remove('category-input'); // Show the new category input
+                newCategoryDiv.style.display = 'block'; // Ensure it's visible
+            } else {
+                newCategoryDiv.classList.add('category-input'); // Hide the new category input
+                newCategoryDiv.style.display = 'none'; // Ensure it's hidden
+            }
+        }
+    </script>
+</body>
 </html>

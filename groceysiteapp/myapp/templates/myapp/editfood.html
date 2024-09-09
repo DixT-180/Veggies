@@ -1,102 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
+    <title>Update Food Item</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
 
-       <a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
-<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
-<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
-<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
-<a href="{% url 'calcount' %}"><h1>diet plan</h1></a>
-<h1>edit </h1>
+    {% include "myapp/navbar.html" %}
 
-<center>
-    <form method ="POST" action="/updatefooditem/{{food_eitem.id}}">
-        {% csrf_token %}
-        <div class="container">
-            <br>
-            <div class="form-group row">
-                <label class="col-sm-1 col-form-label"></label>
-                <div class ="col-sm-4">
-                    <h3>update detail </h3>
-                </div>
-            </div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="POST" action="/updatefooditem/{{food_eitem.id}}">
+                    {% csrf_token %}
+                    <h3 class="text-center mb-4">Update Details</h3>
 
+                    <div class="form-group">
+                        <label for="food_ename">Food Name</label>
+                        <input type="text" class="form-control" name="food_ename" id="food_ename" 
+                        value="{{ food_eitem.food_name }}" required>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="food_cat">Food Category</label>
+                        <input type="text" class="form-control" name="food_cat" id="food_cat" 
+                        value="{{ food_eitem.food_category }}" required>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="food_cal">Calories</label>
+                        <input type="text" class="form-control" name="food_cal" id="food_cal" 
+                        value="{{ food_eitem.food_calorie }}">
+                    </div>
 
+                    <div class="form-group">
+                        <label for="fprice">Price</label>
+                        <input type="text" class="form-control" name="fprice" id="fprice" 
+                        value="{{ food_eitem.fprice }}">
+                    </div>
 
-
-
-
-
-
-
-
-            <div class="form-group row">
-                 <label class="col-sm-2 col-form-label">Food Name</label>
-                 <div class ="col-sm-4">
-                    <input type="text" name="food_ename" id="id" 
-                    value="{{ food_eitem.food_name}}"/>
-                 </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label"> Food category :</label>
-                    <div class ="col-sm-4">
-                   <input type="text" name="food_cat" id="" 
-                    value="{{ food_eitem.food_category}}" />
-                        </div>
-                        </div>
-
-             <div class="form-group row">
-                 <label class="col-sm-2 col-form-label">Calories</label>
-                 <div class ="col-sm-4">
-                    <input type="text" name="food_cal" id="" 
-                    value="{{ food_eitem.food_calorie}}"/>
-                 </div>
-                </div>
-
-
-                  
-
-
-
-
-                   <div class="form-group row">
-                 <label class="col-sm-2 col-form-label">price</label>
-                 <div class ="col-sm-4">
-                    <input type="text" name="fprice" id="fprice" 
-                    value="{{ food_eitem.fprice}}"/>
-                 </div>
-                </div>
-
-
-                    <div class="form-group row">
-                 <label class="col-sm-1 col-form-label"></label>
-                 <div class ="col-sm-4">
-                    <input type="submit" class="btn btn-success">update </button>
-                 </div>
-                </div>
-                </div>
+                    <button type="submit" class="btn btn-success btn-block">Update</button>
                 </form>
-                </center>
-                </body>
-                </html>
+            </div>
+        </div>
+    </div>
 
-
-
-
-
-
-
-
-
-  </body>
+</body>
 </html>

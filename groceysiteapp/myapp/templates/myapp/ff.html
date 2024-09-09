@@ -1,37 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  {% include "myapp/navbar.html" %}
-  <body>
+    <title>Food Freeze Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
 
-    
-    <center>
+    {% include "myapp/navbar.html" %}
 
-<form name="register" method="post" action="../insert_ffreeze/">
-    {% csrf_token %}
-    <pre>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Food Freeze Details</h1>
+        <form name="register" method="post" action="../insert_ffreeze/">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="ffbought">Food Bought</label>
+                <input type="text" class="form-control" name="ffbought" id="ffbought" required>
+            </div>
 
-  {% comment %} FID : <input type="text" name="fid" value="" width="200"> <br> {% endcomment %}
-   Food Bought : <input type="text" name="ffbought" value="" width="200"> <br>
-    <br>
-    food lifespan(freeze):<input type="text" name="flfreeze" value="" width="200"> <br>
-    food lifespan(non-freeze):<input type="text" name="flnfreeze" value="" width="200"> <br>
+            <div class="form-group">
+                <label for="flfreeze">Food Lifespan (Freeze)</label>
+                <input type="text" class="form-control" name="flfreeze" id="flfreeze" required>
+            </div>
 
+            <div class="form-group">
+                <label for="flnfreeze">Food Lifespan (Non-Freeze)</label>
+                <input type="text" class="form-control" name="flnfreeze" id="flnfreeze" required>
+            </div>
 
-   <input type="submit" name="fb" value="click to submit" width="300" height="100">
-   {% csrf_token %}
-    </pre>
-</form>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
 
-
-    </center>
-
-
-  </body>
+</body>
 </html>

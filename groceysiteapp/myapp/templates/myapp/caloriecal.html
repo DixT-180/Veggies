@@ -1,77 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTML 5 Boilerplate</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  {% include "myapp/navbar.html" %}
-  <body>
+    <title>Calorie Counter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
 
-    <center>
-<h1>calorie counter </h1>
-<form name="register" method="post" action="../insert_foods_cal/">
-    {% csrf_token %}
-    <pre>
+    {% include "myapp/navbar.html" %}
 
-  {% comment %} FcID : <input type="text" name="fcid" value="" width="200"> <br> {% endcomment %}
-   veg food count<input type="text" name="veg_count" value="" width="200"> 
-      
-<label for="fveg">Choose a vegetable:</label>
-    <select name="fveg" id="fveg">
-        <option value="" disabled selected>Select a Category</option>
-        {% for category in veg_categories %}
-            <option value="{{ category.food_name }}">{{ category.food_name }}</option>
-        {% endfor %}
-    </select>
-   
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Calorie Counter</h1>
+        <form name="register" method="post" action="../insert_foods_cal/">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="veg_count">Vegetable Count</label>
+                <input type="text" class="form-control" name="veg_count" id="veg_count" required>
+            </div>
 
-    <br>
-   Fruit count<input type="text" name="fruit_count" value="" width="200"> 
-      
-<label for="ffruit">Choose a fruit:</label>
-    <select name="ffruit" id="ffruit">
-        <option value="" disabled selected>Select a Category</option>
-        {% for category in fruit_categories %}
-            <option value="{{ category.food_name }}">{{ category.food_name }}</option>
-        {% endfor %}
-    </select>
+            <div class="form-group">
+                <label for="fveg">Choose a Vegetable</label>
+                <select class="form-control" name="fveg" id="fveg" required>
+                    <option value="" disabled selected>Select a Category</option>
+                    {% for category in veg_categories %}
+                        <option value="{{ category.food_name }}">{{ category.food_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <br>
-   carbs count<input type="text" name="carbs_count" value="" width="200"> 
-      
-<label for="fcarbs">Choose a carb diet:</label>
-    <select name="fcarb" id="fcarb">
-        <option value="" disabled selected>Select a Category</option>
-        {% for category in carb_categories %}
-            <option value="{{ category.food_name }}">{{ category.food_name }}</option>
-        {% endfor %}
-    </select>
+            <div class="form-group">
+                <label for="fruit_count">Fruit Count</label>
+                <input type="text" class="form-control" name="fruit_count" id="fruit_count" required>
+            </div>
 
-    <br>
-protein count<input type="text" name="protein_count" value="" width="200"> 
+            <div class="form-group">
+                <label for="ffruit">Choose a Fruit</label>
+                <select class="form-control" name="ffruit" id="ffruit" required>
+                    <option value="" disabled selected>Select a Category</option>
+                    {% for category in fruit_categories %}
+                        <option value="{{ category.food_name }}">{{ category.food_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <label for="fprotein">Choose a protein diet:</label>
-    <select name="fprotein" id="fprotein">
-        <option value="" disabled selected>Select a Category</option>
-        {% for category in protein_categories %}
-            <option value="{{ category.food_name }}">{{ category.food_name }}</option>
-        {% endfor %}
-    </select>
+            <div class="form-group">
+                <label for="carbs_count">Carbs Count</label>
+                <input type="text" class="form-control" name="carbs_count" id="carbs_count" required>
+            </div>
 
-    <br>
+            <div class="form-group">
+                <label for="fcarb">Choose a Carb Diet</label>
+                <select class="form-control" name="fcarb" id="fcarb" required>
+                    <option value="" disabled selected>Select a Category</option>
+                    {% for category in carb_categories %}
+                        <option value="{{ category.food_name }}">{{ category.food_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
+            <div class="form-group">
+                <label for="protein_count">Protein Count</label>
+                <input type="text" class="form-control" name="protein_count" id="protein_count" required>
+            </div>
 
-   <input type="submit" name="foodcat" value="click to submit" width="300" height="100">
-   {% csrf_token %}
-    </pre>
-</form>
+            <div class="form-group">
+                <label for="fprotein">Choose a Protein Diet</label>
+                <select class="form-control" name="fprotein" id="fprotein" required>
+                    <option value="" disabled selected>Select a Category</option>
+                    {% for category in protein_categories %}
+                        <option value="{{ category.food_name }}">{{ category.food_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
 
-    </center>
-
-
-  </body>
+</body>
 </html>

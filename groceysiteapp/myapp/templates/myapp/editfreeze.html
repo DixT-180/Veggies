@@ -1,89 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
+</head>
+<body>
+    {% include "myapp/navbar.html" %}
 
-       <a href="{% url 'viewtables' %}"><h1>See Details</h1></a>
-<a href="{% url 'fb' %}"><h1>Enter Buy Details</h1></a>
-<a href="{% url 'fc' %}"><h1>Enter Consumed Details</h1></a>
-<a href="{% url 'ff' %}"><h1>Enter food lifespans</h1></a>
-<a href="{% url 'calcount' %}"><h1>diet plan</h1></a>
-<a href="{% url 'foodcat' %}"><h1>create food cat</h1></a>
-<h1>edit </h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h3 class="text-center mb-4">Update Details</h3>
+                
+                <form method="POST" action="/updatefreezeritem/{{ fz_item.id }}">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id">ID</label>
+                        <input type="text" class="form-control" name="nid" id="id" required maxlength="20" value="{{ fz_item.id }}" readonly>
+                    </div>
 
-<center>
-    <form method ="POST" action="/updatefreezeritem/{{fz_item.id}}">
-        {% csrf_token %}
-        <div class="container">
-            <br>
-            <div class="form-group row">
-                <label class="col-sm-1 col-form-label"></label>
-                <div class ="col-sm-4">
-                    <h3>update details </h3>
-                </div>
-            </div>
-            <div class="form-group row">
-                 <label class="col-sm-2 col-form-label">Id</label>
-                 <div class ="col-sm-4">
-                    <input type="text" name="nid" id="id" required maxlength="20"
-                    value="{{ fz_item.id}}"/>
-                 </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Food brought</label>
-                    <div class ="col-sm-4">
-                   <input type="text" name="ffbought" id="fbought" required maxlength="100"
-                    value="{{ fz_item.ffbought }}" />
-                        </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="ffbought">Food Brought</label>
+                        <input type="text" class="form-control" name="ffbought" id="ffbought" required maxlength="100" value="{{ fz_item.ffbought }}">
+                    </div>
 
+                    <div class="form-group">
+                        <label for="flfreeze">Food Lifespan (Freeze)</label>
+                        <input type="text" class="form-control" name="flfreeze" id="flfreeze" required maxlength="100" value="{{ fz_item.ffreeze }}">
+                    </div>
 
-  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Food lifespan(freeze)</label>
-                    <div class ="col-sm-4">
-                   <input type="text" name="flfreeze" id="" required maxlength="100"
-                    value="{{ fz_item.ffreeze }}" />
-                        </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="flnfreeze">Food Lifespan (Non-Freeze)</label>
+                        <input type="text" class="form-control" name="flnfreeze" id="flnfreeze" required maxlength="100" value="{{ fz_item.fnfreeze }}">
+                    </div>
 
-     <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Food lifespan(non-freeze)</label>
-                    <div class ="col-sm-4">
-                   <input type="text" name="flnfreeze" id="" required maxlength="100"
-                    value="{{ fz_item.fnfreeze }}" />
-                        </div>
-                        </div>
-
-
-
-
-
-
-                    <div class="form-group row">
-                 <label class="col-sm-1 col-form-label"></label>
-                 <div class ="col-sm-4">
-                    <input type="submit" class="btn btn-success">update </button>
-                 </div>
-                </div>
-                </div>
+                    <button type="submit" class="btn btn-success btn-block">Update</button>
                 </form>
-                </center>
-                </body>
-                </html>
-
-
-
-
-
-
-
-
-
-  </body>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

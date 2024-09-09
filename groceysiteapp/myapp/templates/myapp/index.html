@@ -6,11 +6,43 @@
 <div class="container mt-4">
     <h1 class="text-center">Remaining Food Inventory</h1>
 
-    <!-- Button to trigger the view -->
-    <form method="GET" action="{% url 'index' %}" class="text-center mb-4">
-        <!-- You can add a button if needed -->
-        <!-- <input type="submit" class="btn btn-primary" value="Show Remaining Vegetables"> -->
-    </form>
+    <!-- Button to trigger the Bootstrap modal -->
+    <div class="text-center mb-4">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
+            Get Started
+        </button>
+    </div>
+   {% if messages %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+
+    <!-- Bootstrap modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Do you want to enter food entry details?
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'fb' %}" class="btn btn-primary">Yes</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% if remaining_foods %}
         <h2 class="text-center">Remaining Food as of {{ date }}:</h2>
@@ -73,5 +105,14 @@
             <h4>Total Calories: {{ totals }}</h4>
         </div>
     {% endif %}
+
+
+
+
 </div>
+
+<!-- Include Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
