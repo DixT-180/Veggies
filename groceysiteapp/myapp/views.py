@@ -234,6 +234,7 @@ def viewtables(request):
 
 
     bought_expiry= Fbought.objects.all()
+    
     # Get the latest freezer entry for each bought item
     for item in bought_expiry:
 
@@ -260,6 +261,42 @@ def viewtables(request):
         # Set the calculated expiry date to the item
         item.expiry_date = expiry_date
     
+
+    fetched_objs = [bought_expiry,consumed,freezed,foods]
+    tables_page = ['page','consumed_page','freezer_page','foods_page']
+
+    obj_list=[]
+    i=0
+    for item in tables_page:
+       
+        page = request.GET.get(item,1)
+        print(item)
+        paginator = Paginator(fetched_objs[i], 10)
+        i=i+1
+    
+        try:
+            objects = paginator.page(page)
+        
+        except PageNotAnInteger:
+        # If the page is not an integer, show the first page
+            objects = paginator.page(1)
+        except EmptyPage:
+        # If the page is out of range, show the last existing page
+            objects = paginator.page(paginator.num_pages)
+        obj_list.append(objects)
+
+    print(obj_list,'see here')
+
+    
+
+    
+
+
+    return render(request, 'myapp/viewdetails.html', {'bought_expiry': bought_expiry,'bought_data': bought,"freezer_data":freezed,"foods":foods,"objects":obj_list[0],'consumed_pg': obj_list[1],'freezer_pg':obj_list[2],'foods_pg':obj_list[3]
+
+    })
+
+    ###################################################3
     page = request.GET.get('page', 1)  # Get the page number from the request
 
     paginator = Paginator(bought_expiry, 10)  # Show 10 objects per page
